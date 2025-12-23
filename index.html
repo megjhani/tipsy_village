@@ -530,6 +530,93 @@
       filter: drop-shadow(0 0 10px rgba(200, 185, 166, 0.5));
     }
 
+    /* Cocktails Showcase */
+    .cocktails-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .cocktail-card {
+      background: linear-gradient(135deg, rgba(74, 44, 29, 0.3) 0%, rgba(42, 30, 23, 0.4) 100%),
+                  url('assets/cocktail_background.jpg') center/cover;
+      padding: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid rgba(200, 185, 166, 0.3);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .cocktail-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(10, 10, 10, 0.7) 0%, rgba(42, 30, 23, 0.8) 100%);
+      z-index: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .cocktail-card:hover::before {
+      opacity: 0.85;
+    }
+
+    .cocktail-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(200, 185, 166, 0.3);
+      border-color: rgba(200, 185, 166, 0.6);
+    }
+
+    .cocktail-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cocktail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .cocktail-name {
+      font-size: 1.4rem;
+      color: #f5efe6;
+      letter-spacing: 1px;
+      line-height: 1.3;
+      flex: 1;
+      font-weight: 600;
+    }
+
+    .cocktail-price {
+      font-size: 1.3rem;
+      color: #c8b9a6;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .cocktail-tagline {
+      font-style: italic;
+      color: #c8b9a6;
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      opacity: 0.95;
+    }
+
+    .cocktail-desc {
+      color: #f5efe6;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
     /* Mobile Responsive */
     @media (max-width: 768px) {
       .hero h1 {
@@ -570,6 +657,14 @@
 
       .emoji-float {
         font-size: 2rem;
+      }
+
+      .cocktails-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .cocktail-name {
+        font-size: 1.2rem;
       }
     }
   </style>
@@ -760,17 +855,123 @@
       <img src="assets/cocktail.png" alt="Cocktails">
     </div>
 
+    <div class="cocktails-showcase">
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Tipsy Village Island Spritz</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"Sunlight in a glass — where ocean breeze meets city ease."</p>
+        <p class="cocktail-desc">A crisp tropical spritz kissed with coconut and ginger fizz. Light, lively, and endlessly refreshing.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Village Rosé Typhoon Sangria</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"A summer storm of pink skies and laughter."</p>
+        <p class="cocktail-desc">Rosé swirls with passion fruit and fresh watermelon — a playful twist on classic sangria with a tropical heart.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Tipsy Painkiller Lane</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"Paradise found at the end of the alley."</p>
+        <p class="cocktail-desc">Rich coconut and golden fruit melt into silky sake — a lush, island-style escape in every sip.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Guava Alley Swizzle</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"A pink breeze through hidden garden streets."</p>
+        <p class="cocktail-desc">Bright guava and cool mint swirl together over crushed ice — breezy, vibrant, and delightfully fresh.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Yuzu Courtyard Lagoon</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"A color-changing daydream under paper lanterns."</p>
+        <p class="cocktail-desc">Citrus and blossom notes flow through layers of blue and gold — a tranquil, poetic twist on a summer cooler.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Pineapple Village Mojito</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"Tropical rhythm, village soul."</p>
+        <p class="cocktail-desc">A breezy, island-style mojito reimagined with sake and pineapple — refreshment with an artistic spin.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Tipsy Sake-Rita</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"A sake twist on rebellion in a salt-rimmed glass."</p>
+        <p class="cocktail-desc">Crisp, tangy, and clean — where Japanese grace meets margarita mischief.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Village Jungle Bird-ish</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"Tropical noir — bittersweet and bold."</p>
+        <p class="cocktail-desc">A moody tropical cocktail with layers of fruit, citrus, and gentle bitterness. Balanced, unexpected, and quietly addictive.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Tipsy Garden Cup</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"A toast to slow afternoons and secret gardens."</p>
+        <p class="cocktail-desc">Light, effervescent, and herbaceous — fresh fruit and bubbles mingle like sunlight through leaves.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Coconut Cold Brew Sake-tini</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"The artist's midnight muse."</p>
+        <p class="cocktail-desc">Smooth, dark, and silken — espresso meets coconut and sake for a decadent yet delicate espresso martini reimagined.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Tipsy Oat Island Latte</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"Comfort in a glass, kissed by the tide."</p>
+        <p class="cocktail-desc">Creamy oat milk and coffee meet a whisper of sake — dreamy, balanced, and quietly indulgent.</p>
+      </div>
+
+      <div class="cocktail-card">
+        <div class="cocktail-header">
+          <h4 class="cocktail-name">Village Espresso Orange Highball</h4>
+          <span class="cocktail-price">$15</span>
+        </div>
+        <p class="cocktail-tagline">"When morning meets midnight."</p>
+        <p class="cocktail-desc">Bold espresso, bright citrus, and smooth sake sparkle together — a caffeine-kissed toast to the in-between hours.</p>
+      </div>
+    </div>
+
     <div class="menu-grid">
       <div class="menu-category">
-        <h3 class="category-title">Cocktails & Beer</h3>
-        <div class="menu-item">
-          <div class="item-name">All Signature Cocktails</div>
-          <div class="item-price">$15</div>
-        </div>
+        <h3 class="category-title">Craft Beer</h3>
         <div class="menu-item">
           <div class="item-name">
-            Craft Beer
-            <span class="item-note">rotating selection</span>
+            Rotating Selection
+            <span class="item-note">ask your bartender for today's picks</span>
           </div>
           <div class="item-price">$10–$15</div>
         </div>
@@ -779,39 +980,98 @@
       <div class="menu-category">
         <h3 class="category-title">Wine</h3>
         <div class="menu-item">
-          <div class="item-name">Pét-Nat Lou 38</div>
-          <div class="item-price">$18</div>
+          <div class="item-name">
+            Pét-Nat Lou 38
+            <span class="item-note">Vinho Verde, Portugal • Sparkling White</span>
+            <span class="item-note">Citrus, pineapple, pear & apple</span>
+          </div>
+          <div class="item-price">$15 / $60</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Weingut Pittnauer Rosé</div>
-          <div class="item-price">$15</div>
+          <div class="item-name">
+            Cheverny
+            <span class="item-note">Loire Valley, France • White</span>
+            <span class="item-note">Crisp, citrusy, green apple & orchard fruit</span>
+          </div>
+          <div class="item-price">$15 / $60</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Cheverny</div>
-          <div class="item-price">$18</div>
+          <div class="item-name">
+            Weingut Pittnauer Rosé
+            <span class="item-note">Burgenland, Austria • Rosé</span>
+            <span class="item-note">Red raspberry & citrus</span>
+          </div>
+          <div class="item-price">$12 / $48</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Bisé</div>
-          <div class="item-price">$16</div>
+          <div class="item-name">
+            Bisé
+            <span class="item-note">France • Orange Wine</span>
+            <span class="item-note">Apricot, orange peel, honeyed nuts</span>
+          </div>
+          <div class="item-price">$15 / $60</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">
+            Stefanago Mischiabacche Rosso
+            <span class="item-note">Lombardy, Italy • Red</span>
+            <span class="item-note">Rich dark fruit, blueberry, plum, black cherry</span>
+          </div>
+          <div class="item-price">$12 / $48</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">
+            Jean Claude Chanudet
+            <span class="item-note">Burgundy, France • Red</span>
+            <span class="item-note">Lemon peel, peach, spice, toasted bread, white flowers</span>
+          </div>
+          <div class="item-price">$18 / $72</div>
         </div>
       </div>
 
       <div class="menu-category">
         <h3 class="category-title">Bar Bites</h3>
         <div class="menu-item">
-          <div class="item-name">Hummus & Pita</div>
+          <div class="item-name">
+            Grilled Cheese
+            <span class="item-note">Melty, golden, classic comfort</span>
+          </div>
+          <div class="item-price">$6</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Cheese Plate</div>
+          <div class="item-name">
+            Chips & Salsa
+            <span class="item-note">Fresh-made salsa, crispy tortilla chips</span>
+          </div>
+          <div class="item-price">$6</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Burrata & Bread</div>
+          <div class="item-name">
+            Garlic Bread
+            <span class="item-note">Toasted sourdough, herb butter, garlic bliss</span>
+          </div>
+          <div class="item-price">$12</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Chips & Salsa</div>
+          <div class="item-name">
+            Hummus & Pita
+            <span class="item-note">Creamy hummus, warm pita, olive oil drizzle</span>
+          </div>
+          <div class="item-price">$14</div>
         </div>
         <div class="menu-item">
-          <div class="item-name">Pretzels & Hummus</div>
+          <div class="item-name">
+            Cheese Plate
+            <span class="item-note">Curated selection, crackers, seasonal accents</span>
+          </div>
+          <div class="item-price">$18</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-name">
+            Burrata & Bread
+            <span class="item-note">Creamy burrata, crusty bread, balsamic, fresh basil</span>
+          </div>
+          <div class="item-price">$19</div>
         </div>
       </div>
     </div>
