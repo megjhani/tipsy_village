@@ -1156,7 +1156,7 @@
 
           <div style="margin-bottom: 1.5rem;">
             <label style="display: block; margin-bottom: 0.5rem; color: #c8b9a6; font-weight: 600;">Event Date</label>
-            <input type="date" name="event_date" style="width: 100%; padding: 0.8rem; background: rgba(200, 185, 166, 0.1); border: 1px solid rgba(200, 185, 166, 0.3); border-radius: 8px; color: #f5efe6; font-family: Georgia, serif; font-size: 1rem;">
+            <input type="date" name="event_date" id="eventDate" style="width: 100%; padding: 0.8rem; background: rgba(200, 185, 166, 0.1); border: 1px solid rgba(200, 185, 166, 0.3); border-radius: 8px; color: #f5efe6; font-family: Georgia, serif; font-size: 1rem;">
           </div>
 
           <div style="margin-bottom: 1.5rem;">
@@ -1215,6 +1215,13 @@
       });
     });
 
+    // Set minimum date for event booking (today)
+    const eventDateInput = document.getElementById('eventDate');
+    if (eventDateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      eventDateInput.setAttribute('min', today);
+    }
+
     // Event booking form handler with Web3Forms
     const form = document.getElementById('eventForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -1222,6 +1229,27 @@
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
+
+      // Validate event date if provided
+      const eventDate = eventDateInput.value;
+      if (eventDate) {
+        const selectedDate = new Date(eventDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to compare only dates
+
+        if (selectedDate < today) {
+          formMessage.style.display = 'block';
+          formMessage.style.background = 'rgba(244, 67, 54, 0.2)';
+          formMessage.style.border = '1px solid rgba(244, 67, 54, 0.5)';
+          formMessage.style.color = '#FF6B6B';
+          formMessage.textContent = '✗ Please select a future date for your event.';
+
+          setTimeout(() => {
+            formMessage.style.display = 'none';
+          }, 5000);
+          return;
+        }
+      }
 
       // Disable button and show loading state
       submitBtn.textContent = 'Sending...';
