@@ -420,6 +420,73 @@
       color: #c8b9a6;
     }
 
+    /* Beer section specific styles */
+    .beer-section-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(74, 44, 29, 0.3) 0%, rgba(42, 30, 23, 0.4) 100%);
+      border-radius: 15px;
+      border: 1px solid rgba(200, 185, 166, 0.2);
+    }
+
+    .beer-section-title {
+      font-size: 1.8rem;
+      color: #c8b9a6;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+    }
+
+    .beer-section-subtitle {
+      font-size: 1.1rem;
+      font-style: italic;
+      opacity: 0.85;
+      color: #f5efe6;
+    }
+
+    .beer-category {
+      margin-bottom: 2.5rem;
+    }
+
+    .beer-category-title {
+      font-size: 1.4rem;
+      color: #c8b9a6;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(200, 185, 166, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .beer-item {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(200, 185, 166, 0.03);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+    }
+
+    .beer-item:hover {
+      background: rgba(200, 185, 166, 0.08);
+      border-left-color: #c8b9a6;
+      transform: translateX(5px);
+    }
+
+    .beer-name {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #f5efe6;
+      margin-bottom: 0.4rem;
+    }
+
+    .beer-description {
+      font-size: 0.95rem;
+      font-style: italic;
+      opacity: 0.85;
+      line-height: 1.5;
+      color: #c8b9a6;
+    }
+
     /* Events Section */
     .events-content {
       text-align: center;
@@ -1059,14 +1126,94 @@
     </div>
 
     <div class="menu-grid">
-      <div class="menu-category">
-        <h3 class="category-title">Craft Beer</h3>
-        <div class="menu-item">
-          <div class="item-name">
-            Rotating Selection
-            <span class="item-note">ask your bartender for today's picks</span>
+      <div class="menu-category" style="grid-column: 1 / -1;">
+        <div class="beer-section-header">
+          <h3 class="beer-section-title">🍺 $10 CRAFT BEERS</h3>
+          <p class="beer-section-subtitle">Light bodies. Dirty thoughts. Juicy pours.</p>
+        </div>
+
+        <div class="beer-category">
+          <h4 class="beer-category-title">🌤️ LIGHT & EASY (start innocent…)</h4>
+          <div class="beer-item">
+            <div class="beer-name">Aval French Cider</div>
+            <div class="beer-description">Crisp, bubbly, and dangerously refreshing — like a French flirt that won't text back 🍏💋</div>
           </div>
-          <div class="item-price">$10–$15</div>
+          <div class="beer-item">
+            <div class="beer-name">Rupees India Pale Ale</div>
+            <div class="beer-description">Smooth, mellow, and charming — the "nice guy" that sneaks up on you 😌</div>
+          </div>
+        </div>
+
+        <div class="beer-category">
+          <h4 class="beer-category-title">🍑 FRUITY & A LITTLE NAUGHTY</h4>
+          <div class="beer-item">
+            <div class="beer-name">Talea Peach Berry Punch – Sour Ale</div>
+            <div class="beer-description">Sweet, tart, and a little mouthy — pucker up, baby 🍑💄</div>
+          </div>
+        </div>
+
+        <div class="beer-category">
+          <h4 class="beer-category-title">🌫️ HAZY, JUICY & HOT</h4>
+          <div class="beer-item">
+            <div class="beer-name">Wrench – Hazy IPA</div>
+            <div class="beer-description">Soft, juicy, and easy to love — zero resistance required 😍</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">Other Half Forever</div>
+            <div class="beer-description">Commitment issues? Not with this one. Juicy, lush, and here to stay 💍🍻</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">Other Half Green City</div>
+            <div class="beer-description">Big city energy — loud hops, juicy attitude, no apologies 🌆💚</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">Other Half Broccoli</div>
+            <div class="beer-description">Dank. Green. Slightly weird. Surprisingly sexy 🥦🔥</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">Other Half Mr. Softee Space Twistee</div>
+            <div class="beer-description">Creamy citrus swirl that tastes like bad decisions done right 🍦🚀</div>
+          </div>
+        </div>
+
+        <div class="beer-category">
+          <h4 class="beer-category-title">⭐ BEST SELLERS — THE CROWD TEASERS</h4>
+          <div class="beer-item">
+            <div class="beer-name">Grimm Chronos</div>
+            <div class="beer-description">Clean, smooth, and timeless — never ghosts you ⏳💋</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">Grimm Wavetable</div>
+            <div class="beer-description">Bright, fresh, and perfectly balanced — like your favorite situationship 🌊😉</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">Grimm Flash Frame</div>
+            <div class="beer-description">Fast, flashy, and gone before you regret it 📸⚡</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">KCBC Los Muertos</div>
+            <div class="beer-description">Bold, dark, and unforgettable — raises the dead and your standards 💀❤️</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">KCBC Insane in the Grain</div>
+            <div class="beer-description">Grainy, deep, and a little unhinged — in the best way 😵‍💫🍺</div>
+          </div>
+        </div>
+
+        <div class="beer-category">
+          <h4 class="beer-category-title">🌲 BIG, BOLD & LEGENDARY (finish strong 😈)</h4>
+          <div class="beer-item">
+            <div class="beer-name">Sip of Sunshine IPA</div>
+            <div class="beer-description">Bright, happy, and way stronger than it looks ☀️😏</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">The Alchemist Vermont IPA</div>
+            <div class="beer-description">Rustic, piney, and quietly seductive — old soul, strong hands 🌲🫶</div>
+          </div>
+          <div class="beer-item">
+            <div class="beer-name">The Alchemist Heady Topper</div>
+            <div class="beer-description">Thick, dank, iconic — sip slow or regret everything 🍻🔥</div>
+          </div>
         </div>
       </div>
 
@@ -1225,7 +1372,6 @@
         <p style="margin-bottom: 2rem; opacity: 0.9;">Interested in hosting a private event? Send us a message!</p>
 
         <form id="eventForm" action="https://api.web3forms.com/submit" method="POST" style="max-width: 600px; margin: 0 auto; text-align: left;">
-          <!-- Replace YOUR_ACCESS_KEY_HERE with your actual Web3Forms access key -->
           <input type="hidden" name="access_key" value="88f9b224-29c0-4e70-82da-0910a5f3715a">
           <input type="hidden" name="subject" value="New Event Booking Inquiry - Tipsy Village">
           <input type="hidden" name="from_name" value="Tipsy Village Website">
@@ -1326,7 +1472,7 @@
       if (eventDate) {
         const selectedDate = new Date(eventDate);
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to compare only dates
+        today.setHours(0, 0, 0, 0);
 
         if (selectedDate < today) {
           formMessage.style.display = 'block';
@@ -1342,7 +1488,6 @@
         }
       }
 
-      // Disable button and show loading state
       submitBtn.textContent = 'Sending...';
       submitBtn.disabled = true;
 
@@ -1357,31 +1502,26 @@
         const data = await response.json();
 
         if (data.success) {
-          // Show success message
           formMessage.style.display = 'block';
           formMessage.style.background = 'rgba(76, 175, 80, 0.2)';
           formMessage.style.border = '1px solid rgba(76, 175, 80, 0.5)';
           formMessage.style.color = '#90EE90';
           formMessage.textContent = '✓ Message sent successfully! We\'ll get back to you soon.';
 
-          // Reset form
           form.reset();
         } else {
           throw new Error('Form submission failed');
         }
       } catch (error) {
-        // Show error message
         formMessage.style.display = 'block';
         formMessage.style.background = 'rgba(244, 67, 54, 0.2)';
         formMessage.style.border = '1px solid rgba(244, 67, 54, 0.5)';
         formMessage.style.color = '#FF6B6B';
         formMessage.textContent = '✗ Something went wrong. Please try again or contact us directly on Instagram.';
       } finally {
-        // Re-enable button
         submitBtn.textContent = 'Send Message';
         submitBtn.disabled = false;
 
-        // Hide message after 8 seconds
         setTimeout(() => {
           formMessage.style.display = 'none';
         }, 8000);
