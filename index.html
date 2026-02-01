@@ -530,6 +530,88 @@
       filter: drop-shadow(0 0 10px rgba(200, 185, 166, 0.5));
     }
 
+    /* Today's Special Banner */
+    .todays-special {
+      background: linear-gradient(135deg, rgba(74, 44, 29, 0.95) 0%, rgba(42, 30, 23, 0.95) 100%);
+      border-top: 3px solid #c8b9a6;
+      border-bottom: 3px solid #c8b9a6;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .todays-special::before {
+      content: '✨';
+      position: absolute;
+      top: 20px;
+      left: 5%;
+      font-size: 3rem;
+      opacity: 0.3;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .todays-special::after {
+      content: '☕';
+      position: absolute;
+      bottom: 20px;
+      right: 5%;
+      font-size: 3rem;
+      opacity: 0.3;
+      animation: float 4s ease-in-out infinite 2s;
+    }
+
+    .special-label {
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #c8b9a6;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .special-title {
+      font-size: 3rem;
+      color: #f5efe6;
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(45deg, #fff, #c8b9a6, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .special-description {
+      font-size: 1.3rem;
+      color: #f5efe6;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.8;
+      opacity: 0.95;
+      font-style: italic;
+    }
+
+    .special-emoji {
+      font-size: 2rem;
+      margin: 0 0.3rem;
+    }
+
+    @media (max-width: 768px) {
+      .special-title {
+        font-size: 2rem;
+      }
+
+      .special-description {
+        font-size: 1.1rem;
+      }
+
+      .todays-special::before,
+      .todays-special::after {
+        font-size: 2rem;
+      }
+    }
+
     /* Cocktails Showcase */
     .cocktails-showcase {
       display: grid;
@@ -700,6 +782,15 @@
     </div>
     <div class="scroll-indicator"></div>
   </header>
+
+  <div class="todays-special">
+    <div class="special-label">Today's Special</div>
+    <h2 class="special-title">Tipsy Chai <span class="special-emoji">🍂</span></h2>
+    <p class="special-description">
+      Warm, spiced, and gently boozy—our signature chai gets a cozy twist with a splash of spirit.
+      Perfect for chilly days when you need comfort with a kick. <span class="special-emoji">🔥</span>
+    </p>
+  </div>
 
   <section id="cafe">
     <div class="section-header">
