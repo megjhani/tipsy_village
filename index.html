@@ -599,7 +599,8 @@
 
     /* Today's Special Banner */
     .todays-special {
-      background: linear-gradient(135deg, rgba(74, 44, 29, 0.95) 0%, rgba(42, 30, 23, 0.95) 100%);
+      background: linear-gradient(135deg, rgba(139, 0, 139, 0.3) 0%, rgba(220, 20, 60, 0.3) 50%, rgba(255, 192, 203, 0.2) 100%),
+                  linear-gradient(135deg, rgba(74, 44, 29, 0.95) 0%, rgba(42, 30, 23, 0.95) 100%);
       border-top: 3px solid #c8b9a6;
       border-bottom: 3px solid #c8b9a6;
       padding: 2.5rem 2rem;
@@ -610,22 +611,22 @@
     }
 
     .todays-special::before {
-      content: '✨';
+      content: '💕';
       position: absolute;
       top: 20px;
       left: 5%;
       font-size: 3rem;
-      opacity: 0.3;
+      opacity: 0.4;
       animation: float 4s ease-in-out infinite;
     }
 
     .todays-special::after {
-      content: '☕';
+      content: '❤️';
       position: absolute;
       bottom: 20px;
       right: 5%;
       font-size: 3rem;
-      opacity: 0.3;
+      opacity: 0.4;
       animation: float 4s ease-in-out infinite 2s;
     }
 
@@ -633,7 +634,7 @@
       font-size: 0.9rem;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #c8b9a6;
+      color: #ffb6c1;
       margin-bottom: 0.5rem;
       font-weight: 600;
     }
@@ -643,8 +644,8 @@
       color: #f5efe6;
       margin-bottom: 1rem;
       letter-spacing: 2px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-      background: linear-gradient(45deg, #fff, #c8b9a6, #fff);
+      text-shadow: 0 2px 10px rgba(255, 182, 193, 0.5);
+      background: linear-gradient(45deg, #fff, #ffb6c1, #ff69b4, #c8b9a6, #fff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -652,7 +653,7 @@
     .special-description {
       font-size: 1.3rem;
       color: #f5efe6;
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
       line-height: 1.8;
       opacity: 0.95;
@@ -851,11 +852,12 @@
   </header>
 
   <div class="todays-special">
-    <div class="special-label">Today's Special</div>
-    <h2 class="special-title">Tipsy Chai (Hot cocktail) <span class="special-emoji">🍂</span></h2>
+    <div class="special-label">Valentine's Special</div>
+    <h2 class="special-title">Love is in the Air <span class="special-emoji">💕</span><span class="special-emoji">❤️</span><span class="special-emoji">💘</span></h2>
     <p class="special-description">
-      Warm, spiced, and gently boozy—our signature chai gets a cozy twist with a splash of spirit.
-      Perfect for chilly days when you need comfort with a kick. <span class="special-emoji">🔥</span>
+      Celebrate love with our special Valentine's offerings: A dreamy Matcha Flight featuring Rose, Orange, Mango & Blueberry
+      <span class="special-emoji">🌸</span> and Wine Pairing with decadent chocolates <span class="special-emoji">🍷</span><span class="special-emoji">🍫</span>
+      Perfect for date night or treating yourself! <span class="special-emoji">💗</span>
     </p>
   </div>
 
@@ -990,6 +992,18 @@
             <span class="item-note">Antioxidant powerhouse, gorgeously purple</span>
           </div>
           <div class="item-price">$8</div>
+        </div>
+      </div>
+
+      <div class="menu-category" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, rgba(255, 105, 180, 0.05) 50%, rgba(42, 30, 23, 0.4) 100%); border: 2px solid rgba(255, 182, 193, 0.3);">
+        <h3 class="category-title" style="color: #ffb6c1;">💝 Valentine's Matcha Flight 💗</h3>
+        <div class="menu-item" style="border: none; padding: 1.5rem; background: rgba(255, 182, 193, 0.05); border-radius: 15px; margin-bottom: 0;">
+          <div class="item-name" style="font-size: 1.2rem;">
+            <strong style="color: #ffb6c1;">Matcha Flight</strong>
+            <span class="item-note" style="opacity: 1; font-size: 1rem; margin-top: 0.8rem;">Four signature matcha creations in one beautiful experience: Rose 🌹 Orange 🍊 Mango 🥭 Blueberry 🫐</span>
+            <span class="item-note" style="opacity: 0.9; margin-top: 0.5rem;">A colorful journey perfect for sharing with someone special or treating yourself to something extraordinary</span>
+          </div>
+          <div class="item-price" style="font-size: 1.4rem; color: #ffb6c1;">$28</div>
         </div>
       </div>
 
@@ -1306,6 +1320,18 @@
             <span class="item-note">The deepest pour on the list, still fresh and lively. Cherry, raspberry, and gentle earth with mouthwatering acidity.</span>
           </div>
           <div class="item-price">$18 / $72</div>
+        </div>
+      </div>
+
+      <div class="menu-category" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, rgba(255, 105, 180, 0.05) 50%, rgba(42, 30, 23, 0.4) 100%); border: 2px solid rgba(255, 182, 193, 0.3);">
+        <h3 class="category-title" style="color: #ffb6c1;">💝 Valentine's Wine & Chocolate Pairing 💗</h3>
+        <div class="menu-item" style="border: none; padding: 1.5rem; background: rgba(255, 182, 193, 0.05); border-radius: 15px; margin-bottom: 0;">
+          <div class="item-name" style="font-size: 1.2rem;">
+            <strong style="color: #ffb6c1;">Wine & Delicacy Chocolates</strong>
+            <span class="item-note" style="opacity: 1; font-size: 1rem; margin-top: 0.8rem;">A curated selection of our finest wines paired with artisanal chocolates 🍷🍫</span>
+            <span class="item-note" style="opacity: 0.9; margin-top: 0.5rem;">The perfect romantic experience—each sip and bite thoughtfully matched to delight your palate ❤️</span>
+          </div>
+          <div class="item-price" style="font-size: 1.4rem; color: #ffb6c1;">$35</div>
         </div>
       </div>
 
