@@ -1,1106 +1,1218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tipsy Village | Cafe & Bar</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --cream: #faf6ef;
-      --sage: #7a9e6e;
-      --sage-light: #a8c490;
-      --sage-pale: #deecd6;
-      --moss: #4a6b3f;
-      --blush: #e8b4b0;
-      --blush-pale: #f5ddd9;
-      --terracotta: #c4835a;
-      --text-dark: #2c3a28;
-      --text-mid: #5a6e52;
-      --text-light: #8a9e80;
-      --card-bg: rgba(255,255,255,0.75);
-      --border: rgba(122,158,110,0.25);
+      --cream:       #fdf8ff;
+      --lavender:    #9171bf;
+      --lav-light:   #c4a8e0;
+      --lav-pale:    #ead6f5;
+      --lav-softest: #f7effe;
+      --plum:        #5e3d85;
+      --mauve:       #c084b0;
+      --mauve-pale:  #f0d4e8;
+      --rose:        #e8a0c0;
+      --rose-pale:   #fde8f3;
+      --text-dark:   #2e1840;
+      --text-mid:    #6b4e8a;
+      --text-light:  #a888c8;
+      --card-bg:     rgba(255,255,255,0.78);
+      --border:      rgba(145,113,191,0.22);
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
+    *{margin:0;padding:0;box-sizing:border-box;}
 
-    body {
+    body{
       font-family:'Jost',sans-serif;
-      background: var(--cream);
-      color: var(--text-dark);
+      background:var(--cream);
+      color:var(--text-dark);
       line-height:1.7;
       overflow-x:hidden;
     }
 
-    /* ── Petal scatter background ── */
-    body::before {
+    /* ── Ambient bloom background ── */
+    body::before{
       content:'';
-      position:fixed; inset:0; z-index:-2;
+      position:fixed;inset:0;z-index:-2;
       background:
-        radial-gradient(ellipse 60% 40% at 10% 20%, rgba(168,196,144,0.18) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 60% at 90% 80%, rgba(232,180,176,0.15) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 50% at 50% 50%, rgba(196,131,90,0.05) 0%, transparent 70%);
-      animation: ambientShift 20s ease-in-out infinite;
+        radial-gradient(ellipse 70% 50% at 5% 10%,  rgba(196,168,224,.22) 0%,transparent 55%),
+        radial-gradient(ellipse 60% 70% at 95% 90%,  rgba(232,160,192,.18) 0%,transparent 55%),
+        radial-gradient(ellipse 50% 40% at 50% 50%,  rgba(240,212,232,.12) 0%,transparent 65%),
+        radial-gradient(ellipse 40% 30% at 80% 20%,  rgba(196,168,224,.14) 0%,transparent 50%);
+      animation:ambientShift 22s ease-in-out infinite;
     }
-    @keyframes ambientShift {
-      0%,100% { transform:scale(1); }
-      50% { transform:scale(1.04) translate(10px,-5px); }
+    @keyframes ambientShift{
+      0%,100%{transform:scale(1);}
+      50%{transform:scale(1.05) translate(12px,-8px);}
     }
 
-    /* ── Fixed corner bouquets ── */
-    .corner-floral {
-      position:fixed;
-      z-index:0;
+    /* ── Repeating tiny petal pattern overlay ── */
+    body::after{
+      content:'';
+      position:fixed;inset:0;z-index:-1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cellipse cx='15' cy='10' rx='4' ry='8' fill='%23c4a8e0' opacity='0.07' transform='rotate(-30 15 10)'/%3E%3Cellipse cx='55' cy='35' rx='3' ry='6' fill='%23e8a0c0' opacity='0.07' transform='rotate(20 55 35)'/%3E%3Cellipse cx='30' cy='60' rx='3.5' ry='7' fill='%23c4a8e0' opacity='0.07' transform='rotate(-15 30 60)'/%3E%3Cellipse cx='70' cy='65' rx='3' ry='6' fill='%23e8a0c0' opacity='0.07' transform='rotate(40 70 65)'/%3E%3Ccircle cx='45' cy='12' r='2' fill='%239171bf' opacity='0.06'/%3E%3Ccircle cx='8' cy='45' r='1.5' fill='%23c084b0' opacity='0.06'/%3E%3C/svg%3E");
       pointer-events:none;
-      opacity:0.18;
     }
-    .corner-floral.tl { top:-10px; left:-10px; transform:rotate(0deg); }
-    .corner-floral.tr { top:-10px; right:-10px; transform:rotate(90deg) scaleX(-1); }
-    .corner-floral.bl { bottom:-10px; left:-10px; transform:rotate(-90deg); }
-    .corner-floral.br { bottom:-10px; right:-10px; transform:rotate(180deg); }
 
-    /* ── Floating petals ── */
-    .petal {
-      position:fixed;
-      pointer-events:none;
-      z-index:0;
-      font-size:1.4rem;
-      opacity:0;
-      animation: petalFall linear infinite;
+    /* ── Falling petals (JS-spawned) ── */
+    .petal{
+      position:fixed;pointer-events:none;z-index:1;
+      opacity:0;animation:petalFall linear forwards;
     }
-    @keyframes petalFall {
-      0%   { opacity:0; transform: translateY(-20px) rotate(0deg); }
-      10%  { opacity:0.4; }
-      90%  { opacity:0.3; }
-      100% { opacity:0; transform: translateY(100vh) rotate(360deg); }
+    @keyframes petalFall{
+      0%  {opacity:0;transform:translateY(-30px) rotate(0deg) scale(1);}
+      8%  {opacity:.5;}
+      85% {opacity:.35;}
+      100%{opacity:0;transform:translateY(105vh) rotate(480deg) scale(.7);}
     }
 
     /* ── Nav ── */
-    nav {
-      position:fixed; top:0; left:0; right:0;
+    nav{
+      position:fixed;top:0;left:0;right:0;
       z-index:1000;
-      background:rgba(250,246,239,0.93);
-      backdrop-filter:blur(16px);
+      background:rgba(253,248,255,.94);
+      backdrop-filter:blur(18px);
       border-bottom:1px solid var(--border);
-      transition:box-shadow 0.3s;
+      transition:box-shadow .3s;
     }
-    nav.scrolled { box-shadow:0 4px 30px rgba(74,107,63,0.12); }
+    nav.scrolled{box-shadow:0 4px 32px rgba(94,61,133,.13);}
 
-    .nav-container {
-      max-width:1200px; margin:0 auto;
-      padding:0.9rem 2rem;
-      display:flex; justify-content:space-between; align-items:center;
-      flex-wrap:wrap; gap:1rem;
+    /* Floral accent bar under nav */
+    nav::after{
+      content:'';
+      position:absolute;bottom:-3px;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,
+        transparent 0%,
+        rgba(196,168,224,.5) 15%,
+        rgba(232,160,192,.7) 35%,
+        rgba(192,132,176,.8) 50%,
+        rgba(232,160,192,.7) 65%,
+        rgba(196,168,224,.5) 85%,
+        transparent 100%);
     }
 
-    .logo-section { display:flex; align-items:center; gap:0.75rem; }
-
-    .logo-img {
-      height:42px; width:42px; border-radius:50%;
-      object-fit:cover; border:2px solid var(--sage-light);
-      transition:transform 0.5s;
-      box-shadow:0 2px 12px rgba(122,158,110,0.2);
+    .nav-container{
+      max-width:1200px;margin:0 auto;
+      padding:.9rem 2rem;
+      display:flex;justify-content:space-between;align-items:center;
+      flex-wrap:wrap;gap:1rem;
     }
-    .logo-img:hover { transform:rotate(360deg) scale(1.05); }
 
-    .logo-text {
+    .logo-section{display:flex;align-items:center;gap:.75rem;}
+
+    .logo-img{
+      height:42px;width:42px;border-radius:50%;
+      object-fit:cover;
+      border:2px solid var(--lav-light);
+      transition:transform .5s;
+      box-shadow:0 2px 14px rgba(145,113,191,.25);
+    }
+    .logo-img:hover{transform:rotate(360deg) scale(1.06);}
+
+    .logo-text{
       font-family:'Cormorant Garamond',serif;
-      font-weight:600; font-size:1.35rem;
-      letter-spacing:3px; color:var(--moss);
+      font-weight:600;font-size:1.35rem;
+      letter-spacing:3px;color:var(--plum);
     }
 
-    .nav-links { display:flex; gap:2rem; align-items:center; }
-    .nav-links a {
-      color:var(--text-mid); text-decoration:none;
-      font-size:0.85rem; letter-spacing:1.5px;
-      text-transform:uppercase; font-weight:500;
-      transition:color 0.3s; position:relative;
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-links a{
+      color:var(--text-mid);text-decoration:none;
+      font-size:.85rem;letter-spacing:1.5px;
+      text-transform:uppercase;font-weight:500;
+      transition:color .3s;position:relative;
     }
-    .nav-links a::after {
-      content:''; position:absolute; bottom:-3px; left:0;
-      width:0; height:1.5px; background:var(--sage);
-      transition:width 0.3s;
+    .nav-links a::before{
+      content:'✿';
+      position:absolute;top:-14px;left:50%;
+      transform:translateX(-50%);
+      font-size:.65rem;color:var(--rose);
+      opacity:0;transition:opacity .3s;
     }
-    .nav-links a:hover { color:var(--moss); }
-    .nav-links a:hover::after { width:100%; }
+    .nav-links a::after{
+      content:'';position:absolute;bottom:-3px;left:0;
+      width:0;height:1.5px;
+      background:linear-gradient(90deg,var(--lav-light),var(--mauve));
+      transition:width .3s;
+    }
+    .nav-links a:hover{color:var(--plum);}
+    .nav-links a:hover::before{opacity:1;}
+    .nav-links a:hover::after{width:100%;}
+
+    /* ── Fixed corner bouquets ── */
+    .corner-floral{
+      position:fixed;z-index:2;pointer-events:none;
+    }
+    .corner-floral.tl{top:0;left:0;}
+    .corner-floral.tr{top:0;right:0;transform:scaleX(-1);}
+    .corner-floral.bl{bottom:0;left:0;transform:scaleY(-1);}
+    .corner-floral.br{bottom:0;right:0;transform:scale(-1);}
 
     /* ── Hero ── */
-    header.hero {
+    header.hero{
       min-height:100vh;
       background:
-        linear-gradient(160deg,rgba(222,236,214,0.85) 0%,rgba(250,246,239,0.6) 50%,rgba(240,212,192,0.7) 100%),
+        linear-gradient(160deg,rgba(224,196,248,.75) 0%,rgba(253,248,255,.55) 45%,rgba(248,212,236,.7) 100%),
         url('assets/background.jpg') center/cover no-repeat;
-      display:flex; align-items:center; justify-content:center;
-      text-align:center; position:relative;
-      padding-top:70px; overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+      text-align:center;position:relative;
+      padding-top:70px;overflow:hidden;
     }
 
-    /* Large decorative SVG flowers inside hero */
-    .hero-flower {
-      position:absolute;
-      pointer-events:none;
-      opacity:0.22;
-      animation:floatPetal 8s ease-in-out infinite;
+    /* Hero floral frame — top & bottom garland strips */
+    .hero-garland-top,.hero-garland-bot{
+      position:absolute;left:0;right:0;
+      pointer-events:none;z-index:2;
+      opacity:.55;
     }
-    .hero-flower.f1 { bottom:-30px; left:-40px; width:320px; animation-delay:0s; }
-    .hero-flower.f2 { top:-20px; right:-50px; width:280px; transform:scaleX(-1); animation-delay:3s; }
-    .hero-flower.f3 { top:30%; left:2%; width:140px; animation-delay:1.5s; opacity:0.15; }
-    .hero-flower.f4 { bottom:15%; right:3%; width:160px; animation-delay:4s; opacity:0.15; }
+    .hero-garland-top{top:68px;}
+    .hero-garland-bot{bottom:0;transform:scaleY(-1);}
 
-    .hero-content {
+    .hero-flower{
+      position:absolute;pointer-events:none;
+      animation:floatBloom 9s ease-in-out infinite;
+    }
+    .hero-flower.f1{bottom:-20px;left:-30px;width:360px;opacity:.28;animation-delay:0s;}
+    .hero-flower.f2{top:-10px;right:-40px;width:320px;opacity:.26;transform:scaleX(-1);animation-delay:3s;}
+    .hero-flower.f3{top:25%;left:1%;width:160px;opacity:.18;animation-delay:1.5s;}
+    .hero-flower.f4{bottom:18%;right:2%;width:175px;opacity:.18;animation-delay:4.5s;}
+    .hero-flower.f5{top:10%;left:38%;width:90px;opacity:.14;animation-delay:2s;}
+
+    @keyframes floatBloom{
+      0%,100%{transform:translateY(0) rotate(-4deg);}
+      50%{transform:translateY(-20px) rotate(4deg);}
+    }
+
+    .hero-content{
       animation:riseIn 1s ease-out;
-      padding:2rem; position:relative; z-index:1;
+      padding:2rem;position:relative;z-index:3;
     }
-    @keyframes riseIn {
-      from { opacity:0; transform:translateY(24px); }
-      to   { opacity:1; transform:translateY(0); }
+    @keyframes riseIn{
+      from{opacity:0;transform:translateY(28px);}
+      to{opacity:1;transform:translateY(0);}
     }
 
-    .hero h1 {
+    .hero h1{
       font-family:'Cormorant Garamond',serif;
-      font-size:6.5rem; font-weight:300;
-      letter-spacing:14px; color:var(--moss);
-      margin-bottom:1rem; line-height:1;
+      font-size:6.5rem;font-weight:300;
+      letter-spacing:14px;color:var(--plum);
+      margin-bottom:1rem;line-height:1;
     }
-
-    .hero-sub {
-      font-size:1rem; letter-spacing:4px;
-      text-transform:uppercase; color:var(--text-mid); font-weight:400;
+    .hero-sub{
+      font-size:1rem;letter-spacing:4px;
+      text-transform:uppercase;color:var(--text-mid);font-weight:400;
     }
-
-    .hero-tagline {
+    .hero-tagline{
       margin-top:1.5rem;
       font-family:'Cormorant Garamond',serif;
-      font-style:italic; font-size:1.4rem;
-      color:var(--terracotta); opacity:0.9;
+      font-style:italic;font-size:1.45rem;
+      color:var(--mauve);opacity:.9;
     }
 
-    /* Small floating emojis in hero */
-    .emoji-float {
-      position:absolute; font-size:2.2rem;
-      animation:floatPetal 7s ease-in-out infinite;
-      opacity:0.5; z-index:2;
+    /* Floating emoji flowers */
+    .emoji-float{
+      position:absolute;
+      animation:floatBloom 7s ease-in-out infinite;
+      opacity:.55;z-index:3;
     }
-    .emoji-1 { top:18%; left:8%; animation-delay:0s; }
-    .emoji-2 { top:68%; right:10%; animation-delay:2.5s; }
-    .emoji-3 { top:35%; left:88%; animation-delay:5s; }
-    .emoji-4 { top:80%; left:20%; animation-delay:1s; font-size:1.6rem; opacity:0.35; }
-    .emoji-5 { top:12%; right:22%; animation-delay:3.5s; font-size:1.6rem; opacity:0.35; }
+    .emoji-1{top:16%;left:7%;font-size:2.4rem;animation-delay:0s;}
+    .emoji-2{top:65%;right:9%;font-size:2.4rem;animation-delay:2.5s;}
+    .emoji-3{top:32%;left:87%;font-size:2.2rem;animation-delay:5s;}
+    .emoji-4{top:78%;left:18%;font-size:1.7rem;opacity:.35;animation-delay:1s;}
+    .emoji-5{top:10%;right:20%;font-size:1.7rem;opacity:.35;animation-delay:3.5s;}
+    .emoji-6{top:50%;left:4%;font-size:1.4rem;opacity:.3;animation-delay:6s;}
+    .emoji-7{top:25%;right:5%;font-size:1.4rem;opacity:.3;animation-delay:4s;}
 
-    @keyframes floatPetal {
-      0%,100% { transform:translateY(0) rotate(-5deg); }
-      50%      { transform:translateY(-18px) rotate(5deg); }
-    }
-
-    .scroll-indicator {
-      position:absolute; bottom:36px; left:50%;
+    .scroll-indicator{
+      position:absolute;bottom:36px;left:50%;
       transform:translateX(-50%);
-      animation:bounce 2s infinite; z-index:2;
+      animation:bounce 2s infinite;z-index:3;
     }
-    .scroll-indicator::after {
-      content:'↓'; font-size:2rem;
-      color:var(--sage); opacity:0.7;
+    .scroll-indicator::after{
+      content:'↓';font-size:2rem;
+      color:var(--lavender);opacity:.7;
     }
-    @keyframes bounce {
-      0%,100% { transform:translateX(-50%) translateY(0); }
-      50%      { transform:translateX(-50%) translateY(-10px); }
-    }
-
-    /* ── Floral divider ── */
-    .floral-divider {
-      display:flex; align-items:center;
-      justify-content:center; gap:1rem;
-      padding:1rem 0; margin:0;
-      opacity:0.5;
-    }
-    .floral-divider svg { flex-shrink:0; }
-    .floral-divider-line {
-      flex:1; max-width:200px; height:1px;
-      background:linear-gradient(90deg, transparent, var(--sage-light), transparent);
+    @keyframes bounce{
+      0%,100%{transform:translateX(-50%) translateY(0);}
+      50%{transform:translateX(-50%) translateY(-10px);}
     }
 
     /* ── Spring Special Banner ── */
-    .todays-special {
-      background:linear-gradient(135deg,#d6ecc4 0%,#f0ddd9 50%,#fce8d4 100%);
-      border-top:2px solid var(--sage-light);
-      border-bottom:2px solid var(--blush);
-      padding:2.5rem 2rem;
-      text-align:center; position:relative; overflow:hidden;
+    .todays-special{
+      background:linear-gradient(135deg,#e8d4f8 0%,#f5d4e8 45%,#fce8f4 100%);
+      border-top:2px solid var(--lav-light);
+      border-bottom:2px solid var(--rose);
+      padding:2.8rem 2rem;
+      text-align:center;position:relative;overflow:hidden;
     }
-    .todays-special::before {
-      content:'🌸'; position:absolute; top:16px; left:4%;
-      font-size:2.8rem; opacity:0.35;
-      animation:floatPetal 5s ease-in-out infinite;
-    }
-    .todays-special::after {
-      content:'🌿'; position:absolute; bottom:16px; right:4%;
-      font-size:2.8rem; opacity:0.35;
-      animation:floatPetal 5s ease-in-out infinite 2s;
-    }
-    /* Extra flower corners on banner */
-    .banner-flower-l, .banner-flower-r {
-      position:absolute; top:50%; pointer-events:none;
-      transform:translateY(-50%); opacity:0.2;
-    }
-    .banner-flower-l { left:8%; }
-    .banner-flower-r { right:8%; transform:translateY(-50%) scaleX(-1); }
 
-    .special-label {
-      font-size:0.78rem; letter-spacing:3px;
-      text-transform:uppercase; color:var(--moss);
-      margin-bottom:0.5rem; font-weight:600;
+    /* Full-width garland across banner */
+    .banner-garland{
+      position:absolute;top:0;left:0;right:0;
+      pointer-events:none;opacity:.5;
     }
-    .special-title {
+    .banner-garland.bot{top:auto;bottom:0;transform:scaleY(-1);}
+
+    .special-label{
+      font-size:.78rem;letter-spacing:3px;
+      text-transform:uppercase;color:var(--plum);
+      margin-bottom:.5rem;font-weight:600;
+      position:relative;z-index:1;
+    }
+    .special-title{
       font-family:'Cormorant Garamond',serif;
-      font-size:2.8rem; font-weight:600;
-      color:var(--moss); margin-bottom:0.8rem; letter-spacing:2px;
+      font-size:2.8rem;font-weight:600;
+      color:var(--plum);margin-bottom:.8rem;letter-spacing:2px;
+      position:relative;z-index:1;
     }
-    .special-description {
-      font-size:1.15rem; color:var(--text-mid);
-      max-width:680px; margin:0 auto;
-      line-height:1.9; font-style:italic;
+    .special-description{
+      font-size:1.15rem;color:var(--text-mid);
+      max-width:680px;margin:0 auto;
+      line-height:1.9;font-style:italic;
+      position:relative;z-index:1;
     }
-    .special-emoji { font-size:1.5rem; margin:0 0.25rem; }
+    .special-emoji{font-size:1.5rem;margin:0 .25rem;}
+
+    /* ── Floral section divider ── */
+    .floral-divider{
+      display:flex;align-items:center;justify-content:center;
+      gap:1.2rem;padding:.8rem 2rem;opacity:.65;
+    }
+    .divider-line{
+      flex:1;max-width:260px;height:1px;
+      background:linear-gradient(90deg,transparent,var(--lav-light),transparent);
+    }
 
     /* ── Sections ── */
-    section {
-      max-width:1100px; margin:0 auto;
-      padding:5rem 2rem; scroll-margin-top:90px;
+    section{
+      max-width:1100px;margin:0 auto;
+      padding:5rem 2rem;scroll-margin-top:90px;
       position:relative;
     }
 
-    /* Faint flower watermark behind each section */
-    section::after {
-      content:'';
+    /* Per-section floral side accents */
+    .section-bloom{
       position:absolute;
-      width:340px; height:340px;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg opacity='0.12' fill='%237a9e6e'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='70' rx='11' ry='22' fill='%23e8b4b0'/%3E%3Cellipse cx='100' cy='130' rx='11' ry='22' fill='%23e8b4b0'/%3E%3Cellipse cx='70' cy='100' rx='22' ry='11' fill='%23e8b4b0'/%3E%3Cellipse cx='130' cy='100' rx='22' ry='11' fill='%23e8b4b0'/%3E%3Cellipse cx='79' cy='79' rx='11' ry='22' transform='rotate(45 79 79)' fill='%23a8c490'/%3E%3Cellipse cx='121' cy='79' rx='11' ry='22' transform='rotate(-45 121 79)' fill='%23a8c490'/%3E%3Cellipse cx='79' cy='121' rx='11' ry='22' transform='rotate(-45 79 121)' fill='%23a8c490'/%3E%3Cellipse cx='121' cy='121' rx='11' ry='22' transform='rotate(45 121 121)' fill='%23a8c490'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
-      pointer-events:none; z-index:0;
-      opacity:0.07;
-      right:-60px; bottom:-60px;
+      pointer-events:none;opacity:.18;
+      animation:floatBloom 10s ease-in-out infinite;
     }
-    #cafe::after { top:-40px; right:-60px; bottom:auto; }
-    #bar::after  { bottom:-40px; left:-60px; right:auto; transform:scaleX(-1); }
-    #events::after { display:none; }
-    #story::after  { top:50%; right:50%; transform:translate(50%,-50%) scale(1.2); }
+    .section-bloom.left{left:-70px;top:60px;animation-delay:1s;}
+    .section-bloom.right{right:-70px;top:120px;animation-delay:3s;}
 
-    .section-header { text-align:center; margin-bottom:3rem; position:relative; z-index:1; }
+    .section-header{text-align:center;margin-bottom:3rem;position:relative;z-index:1;}
 
-    h2 {
+    h2{
       font-family:'Cormorant Garamond',serif;
-      font-size:3.2rem; font-weight:600; color:var(--moss);
-      letter-spacing:6px; text-transform:uppercase;
-      display:inline-block; position:relative;
+      font-size:3.2rem;font-weight:600;color:var(--plum);
+      letter-spacing:6px;text-transform:uppercase;
+      display:inline-block;position:relative;
     }
-    h2::before {
-      content:'✿';
-      display:block; font-size:1.4rem;
-      color:var(--blush); margin-bottom:0.5rem;
+    /* Flower wreath around heading */
+    h2::before{
+      content:'🌸 ✿ 🌸';
+      display:block;font-size:1.1rem;
+      margin-bottom:.6rem;letter-spacing:6px;
       animation:pulse 4s ease-in-out infinite;
     }
-    h2::after {
-      content:''; position:absolute; bottom:-12px; left:50%;
+    h2::after{
+      content:'';position:absolute;bottom:-14px;left:50%;
       transform:translateX(-50%);
-      width:80px; height:2px;
-      background:linear-gradient(90deg,transparent,var(--sage-light),transparent);
+      width:120px;height:2px;
+      background:linear-gradient(90deg,transparent,var(--lav-light),var(--rose),var(--lav-light),transparent);
     }
 
-    .section-intro {
-      text-align:center; font-style:italic; color:var(--text-mid);
-      font-size:1.1rem; margin:1.8rem auto 0; max-width:520px;
+    .section-intro{
+      text-align:center;font-style:italic;
+      color:var(--text-mid);font-size:1.1rem;
+      margin:1.8rem auto 0;max-width:520px;
     }
 
-    .section-icon {
-      text-align:center; font-size:2.2rem;
-      margin:2.5rem 0; opacity:0.35;
-      animation:pulse 4s ease-in-out infinite;
+    .section-icon{
+      text-align:center;font-size:2rem;
+      margin:2.5rem 0;letter-spacing:8px;
+      opacity:.5;animation:pulse 4s ease-in-out infinite;
     }
-    @keyframes pulse {
-      0%,100% { transform:scale(1); opacity:0.35; }
-      50%      { transform:scale(1.08); opacity:0.55; }
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:.45;}
+      50%{transform:scale(1.07);opacity:.65;}
     }
 
-    .section-hero {
-      width:100%; height:280px; border-radius:16px;
-      margin-bottom:3rem; overflow:hidden;
-      box-shadow:0 12px 40px rgba(74,107,63,0.15);
-      border:1px solid var(--border); position:relative; z-index:1;
+    .section-hero{
+      width:100%;height:280px;border-radius:20px;
+      margin-bottom:3rem;overflow:hidden;
+      box-shadow:0 12px 50px rgba(94,61,133,.18);
+      border:2px solid rgba(196,168,224,.4);
+      position:relative;
     }
-    .section-hero img { width:100%; height:100%; object-fit:cover; transition:transform 0.6s; }
-    .section-hero:hover img { transform:scale(1.04); }
+    .section-hero::before{
+      content:'';position:absolute;inset:0;z-index:1;
+      background:linear-gradient(180deg,rgba(234,214,245,.15) 0%,transparent 40%,rgba(234,214,245,.15) 100%);
+      pointer-events:none;
+    }
+    .section-hero img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+    .section-hero:hover img{transform:scale(1.04);}
 
     /* ── Menu Grid ── */
-    .menu-grid {
+    .menu-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-      gap:1.5rem; margin-top:2.5rem; position:relative; z-index:1;
+      gap:1.6rem;margin-top:2.5rem;position:relative;z-index:1;
     }
 
-    .menu-category {
+    .menu-category{
       background:var(--card-bg);
-      backdrop-filter:blur(8px);
-      padding:2rem; border-radius:16px;
-      border:1px solid var(--border);
-      box-shadow:0 4px 20px rgba(74,107,63,0.07);
-      transition:transform 0.35s, box-shadow 0.35s;
-      position:relative; overflow:hidden;
+      backdrop-filter:blur(10px);
+      padding:2rem;border-radius:20px;
+      border:1px solid rgba(196,168,224,.3);
+      box-shadow:0 4px 24px rgba(94,61,133,.08);
+      transition:transform .35s,box-shadow .35s;
+      position:relative;overflow:hidden;
     }
-    /* Tiny flower watermark on each card */
-    .menu-category::after {
+    /* Floral watermark corner on each card */
+    .menu-category::before{
       content:'';
-      position:absolute; bottom:-20px; right:-20px;
-      width:90px; height:90px;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23a8c490' opacity='0.35'%3E%3Ccircle cx='50' cy='50' r='7'/%3E%3Cellipse cx='50' cy='28' rx='6' ry='14'/%3E%3Cellipse cx='50' cy='72' rx='6' ry='14'/%3E%3Cellipse cx='28' cy='50' rx='14' ry='6'/%3E%3Cellipse cx='72' cy='50' rx='14' ry='6'/%3E%3Cellipse cx='33' cy='33' rx='6' ry='14' transform='rotate(45 33 33)'/%3E%3Cellipse cx='67' cy='33' rx='6' ry='14' transform='rotate(-45 67 33)'/%3E%3Cellipse cx='33' cy='67' rx='6' ry='14' transform='rotate(-45 33 67)'/%3E%3Cellipse cx='67' cy='67' rx='6' ry='14' transform='rotate(45 67 67)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
-      pointer-events:none; opacity:0.18;
+      position:absolute;bottom:-24px;right:-24px;
+      width:110px;height:110px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='%23c4a8e0' opacity='0.22'%3E%3Ccircle cx='60' cy='60' r='8'/%3E%3Cellipse cx='60' cy='32' rx='7' ry='16'/%3E%3Cellipse cx='60' cy='88' rx='7' ry='16'/%3E%3Cellipse cx='32' cy='60' rx='16' ry='7'/%3E%3Cellipse cx='88' cy='60' rx='16' ry='7'/%3E%3Cellipse cx='40' cy='40' rx='7' ry='16' transform='rotate(45 40 40)'/%3E%3Cellipse cx='80' cy='40' rx='7' ry='16' transform='rotate(-45 80 40)'/%3E%3Cellipse cx='40' cy='80' rx='7' ry='16' transform='rotate(-45 40 80)'/%3E%3Cellipse cx='80' cy='80' rx='7' ry='16' transform='rotate(45 80 80)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events:none;opacity:.9;
     }
-    .menu-category:hover {
-      transform:translateY(-6px);
-      box-shadow:0 16px 40px rgba(74,107,63,0.14);
+    /* Tiny rose top-left */
+    .menu-category::after{
+      content:'';
+      position:absolute;top:-18px;left:-18px;
+      width:70px;height:70px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cg fill='%23e8a0c0' opacity='0.18'%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Cellipse cx='40' cy='20' rx='5' ry='12'/%3E%3Cellipse cx='40' cy='60' rx='5' ry='12'/%3E%3Cellipse cx='20' cy='40' rx='12' ry='5'/%3E%3Cellipse cx='60' cy='40' rx='12' ry='5'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events:none;
+    }
+    .menu-category:hover{
+      transform:translateY(-8px);
+      box-shadow:0 18px 48px rgba(94,61,133,.16);
     }
 
-    .category-title {
+    .category-title{
       font-family:'Cormorant Garamond',serif;
-      font-size:1.45rem; font-weight:600; color:var(--moss);
-      letter-spacing:2px; text-transform:uppercase;
-      border-bottom:1.5px solid var(--sage-pale);
-      padding-bottom:0.75rem; margin-bottom:1.4rem;
-      position:relative; z-index:1;
+      font-size:1.45rem;font-weight:600;color:var(--plum);
+      letter-spacing:2px;text-transform:uppercase;
+      border-bottom:1.5px solid var(--lav-pale);
+      padding-bottom:.75rem;margin-bottom:1.4rem;
+      position:relative;z-index:1;
     }
-    .category-title::before { content:'✦ '; font-size:0.9rem; color:var(--sage-light); }
+    .category-title::before{content:'🌸 ';font-size:.9rem;}
 
-    .menu-item {
-      display:flex; justify-content:space-between; align-items:flex-start;
-      padding:0.7rem 0;
-      border-bottom:1px solid rgba(122,158,110,0.1);
-      transition:padding-left 0.25s, background 0.25s;
-      border-radius:4px; position:relative; z-index:1;
+    .menu-item{
+      display:flex;justify-content:space-between;align-items:flex-start;
+      padding:.7rem 0;
+      border-bottom:1px solid rgba(145,113,191,.1);
+      transition:padding-left .25s,background .25s;
+      border-radius:6px;position:relative;z-index:1;
     }
-    .menu-item:last-child { border-bottom:none; }
-    .menu-item:hover { padding-left:10px; background:rgba(222,236,214,0.4); }
+    .menu-item:last-child{border-bottom:none;}
+    .menu-item:hover{padding-left:12px;background:rgba(234,214,245,.35);}
 
-    .item-name { flex:1; font-size:1rem; color:var(--text-dark); }
-    .item-price { font-weight:600; color:var(--terracotta); margin-left:1rem; font-size:1rem; white-space:nowrap; }
-    .item-note { font-size:0.82rem; color:var(--text-light); font-style:italic; display:block; margin-top:0.2rem; }
+    .item-name{flex:1;font-size:1rem;color:var(--text-dark);}
+    .item-price{font-weight:600;color:var(--mauve);margin-left:1rem;font-size:1rem;white-space:nowrap;}
+    .item-note{font-size:.82rem;color:var(--text-light);font-style:italic;display:block;margin-top:.2rem;}
 
-    .spring-card {
-      background:linear-gradient(135deg,rgba(214,236,196,0.6) 0%,rgba(245,221,217,0.45) 100%);
-      border:1.5px solid rgba(122,158,110,0.4);
-      grid-column:1 / -1;
+    /* Spring specials card */
+    .spring-card{
+      background:linear-gradient(135deg,rgba(232,212,252,.55) 0%,rgba(252,212,236,.45) 100%);
+      border:1.5px solid rgba(196,132,176,.4);
+      grid-column:1/-1;
     }
-    .spring-card .category-title { color:var(--moss); border-color:var(--sage-light); }
-    .spring-card .item-price { color:var(--moss); }
-    .spring-card .item-note { color:var(--sage); }
+    .spring-card .category-title{color:var(--plum);border-color:var(--lav-light);}
+    .spring-card .item-price{color:var(--plum);}
+    .spring-card .item-note{color:var(--lavender);}
 
     /* ── Beer ── */
-    .beer-section-header {
-      text-align:center; margin-bottom:2rem; padding:1.25rem;
-      background:linear-gradient(135deg,rgba(222,236,214,0.5) 0%,rgba(255,255,255,0.6) 100%);
-      border-radius:12px; border:1px solid var(--border);
+    .beer-section-header{
+      text-align:center;margin-bottom:2rem;padding:1.5rem;
+      background:linear-gradient(135deg,rgba(234,214,245,.45) 0%,rgba(255,255,255,.6) 100%);
+      border-radius:14px;border:1px solid var(--border);
+      position:relative;overflow:hidden;
     }
-    .beer-section-title {
+    .beer-section-header::before{
+      content:'🌷 ✿ 🌷';
+      position:absolute;top:8px;right:16px;
+      font-size:1.1rem;opacity:.3;letter-spacing:4px;
+    }
+    .beer-section-title{
       font-family:'Cormorant Garamond',serif;
-      font-size:1.7rem; color:var(--moss); letter-spacing:2px;
+      font-size:1.7rem;color:var(--plum);letter-spacing:2px;
     }
-    .beer-section-subtitle { font-style:italic; color:var(--text-mid); font-size:1rem; margin-top:0.3rem; }
+    .beer-section-subtitle{font-style:italic;color:var(--text-mid);font-size:1rem;margin-top:.3rem;}
 
-    .beer-category { margin-bottom:2.5rem; }
-    .beer-category-title {
-      font-size:1rem; font-weight:600; color:var(--moss);
-      letter-spacing:1px; text-transform:uppercase;
-      border-bottom:1.5px solid var(--sage-pale);
-      padding-bottom:0.5rem; margin-bottom:1rem;
+    .beer-category{margin-bottom:2.5rem;}
+    .beer-category-title{
+      font-size:.95rem;font-weight:600;color:var(--plum);
+      letter-spacing:1px;text-transform:uppercase;
+      border-bottom:1.5px solid var(--lav-pale);
+      padding-bottom:.5rem;margin-bottom:1rem;
     }
-    .beer-item {
-      padding:0.9rem 1rem; border-radius:8px; margin-bottom:0.8rem;
-      background:rgba(255,255,255,0.5); border-left:3px solid transparent;
-      transition:all 0.3s;
+    .beer-item{
+      padding:.9rem 1rem;border-radius:10px;margin-bottom:.8rem;
+      background:rgba(255,255,255,.52);
+      border-left:3px solid transparent;transition:all .3s;
     }
-    .beer-item:hover { background:rgba(222,236,214,0.5); border-left-color:var(--sage); transform:translateX(4px); }
-    .beer-name { font-weight:600; color:var(--text-dark); font-size:1rem; margin-bottom:0.25rem; }
-    .beer-description { font-size:0.88rem; font-style:italic; color:var(--text-mid); line-height:1.5; }
+    .beer-item:hover{background:rgba(234,214,245,.45);border-left-color:var(--lavender);transform:translateX(5px);}
+    .beer-name{font-weight:600;color:var(--text-dark);font-size:1rem;margin-bottom:.25rem;}
+    .beer-description{font-size:.88rem;font-style:italic;color:var(--text-mid);line-height:1.5;}
 
     /* ── Cocktails ── */
-    .cocktails-showcase {
+    .cocktails-showcase{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-      gap:1.5rem; margin:2.5rem 0; position:relative; z-index:1;
+      gap:1.5rem;margin:2.5rem 0;position:relative;z-index:1;
     }
-    .cocktail-card {
-      background:linear-gradient(135deg,rgba(255,255,255,0.82) 0%,rgba(240,212,192,0.3) 100%);
-      border:1px solid rgba(196,131,90,0.25);
-      padding:2rem; border-radius:16px;
-      transition:all 0.35s;
-      box-shadow:0 4px 16px rgba(196,131,90,0.08);
-      position:relative; overflow:hidden;
+    .cocktail-card{
+      background:linear-gradient(135deg,rgba(255,255,255,.85) 0%,rgba(248,212,236,.28) 100%);
+      border:1px solid rgba(196,132,176,.3);
+      padding:2rem;border-radius:18px;
+      transition:all .35s;
+      box-shadow:0 4px 18px rgba(176,96,144,.1);
+      position:relative;overflow:hidden;
     }
-    .cocktail-card::after {
+    .cocktail-card::after{
       content:'';
-      position:absolute; bottom:-15px; right:-15px;
-      width:70px; height:70px;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23e8b4b0' opacity='0.5'%3E%3Ccircle cx='50' cy='50' r='7'/%3E%3Cellipse cx='50' cy='28' rx='6' ry='14'/%3E%3Cellipse cx='50' cy='72' rx='6' ry='14'/%3E%3Cellipse cx='28' cy='50' rx='14' ry='6'/%3E%3Cellipse cx='72' cy='50' rx='14' ry='6'/%3E%3Cellipse cx='33' cy='33' rx='6' ry='14' transform='rotate(45 33 33)'/%3E%3Cellipse cx='67' cy='33' rx='6' ry='14' transform='rotate(-45 67 33)'/%3E%3Cellipse cx='33' cy='67' rx='6' ry='14' transform='rotate(-45 33 67)'/%3E%3Cellipse cx='67' cy='67' rx='6' ry='14' transform='rotate(45 67 67)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
-      pointer-events:none; opacity:0.25;
+      position:absolute;bottom:-14px;right:-14px;
+      width:72px;height:72px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Cg fill='%23e8a0c0' opacity='0.3'%3E%3Ccircle cx='40' cy='40' r='6'/%3E%3Cellipse cx='40' cy='18' rx='5' ry='12'/%3E%3Cellipse cx='40' cy='62' rx='5' ry='12'/%3E%3Cellipse cx='18' cy='40' rx='12' ry='5'/%3E%3Cellipse cx='62' cy='40' rx='12' ry='5'/%3E%3Cellipse cx='26' cy='26' rx='5' ry='12' transform='rotate(45 26 26)'/%3E%3Cellipse cx='54' cy='26' rx='5' ry='12' transform='rotate(-45 54 26)'/%3E%3Cellipse cx='26' cy='54' rx='5' ry='12' transform='rotate(-45 26 54)'/%3E%3Cellipse cx='54' cy='54' rx='5' ry='12' transform='rotate(45 54 54)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events:none;
     }
-    .cocktail-card:hover { transform:translateY(-8px); box-shadow:0 16px 40px rgba(196,131,90,0.18); border-color:rgba(196,131,90,0.5); }
-    .cocktail-header { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:0.75rem; position:relative; z-index:1; }
-    .cocktail-name { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:600; color:var(--text-dark); flex:1; line-height:1.4; }
-    .cocktail-price { font-weight:600; color:var(--terracotta); font-size:1.1rem; white-space:nowrap; }
-    .cocktail-desc { font-size:0.92rem; color:var(--text-mid); font-style:italic; line-height:1.6; position:relative; z-index:1; }
+    .cocktail-card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(176,96,144,.2);border-color:rgba(196,132,176,.6);}
+    .cocktail-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.75rem;position:relative;z-index:1;}
+    .cocktail-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--text-dark);flex:1;line-height:1.4;}
+    .cocktail-price{font-weight:600;color:var(--mauve);font-size:1.1rem;white-space:nowrap;}
+    .cocktail-desc{font-size:.92rem;color:var(--text-mid);font-style:italic;line-height:1.6;position:relative;z-index:1;}
 
-    .wine-card {
-      background:linear-gradient(135deg,rgba(245,221,217,0.3) 0%,rgba(255,255,255,0.78) 100%);
-      border-color:rgba(232,180,176,0.35);
+    .wine-card{
+      background:linear-gradient(135deg,rgba(248,212,236,.28) 0%,rgba(255,255,255,.8) 100%);
+      border-color:rgba(232,160,192,.35);
     }
 
     /* ── Events ── */
-    .events-content {
-      text-align:center; padding:3rem;
-      background:var(--card-bg); border-radius:20px;
+    .events-content{
+      text-align:center;padding:3rem;
+      background:var(--card-bg);border-radius:22px;
       border:1px solid var(--border);
-      box-shadow:0 6px 30px rgba(74,107,63,0.08);
-      position:relative; overflow:hidden;
+      box-shadow:0 6px 32px rgba(94,61,133,.09);
+      position:relative;overflow:hidden;
     }
-    .events-content::before {
-      content:'';
-      position:absolute; top:-30px; right:-30px;
-      width:160px; height:160px;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23a8c490' opacity='0.3'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='60' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='140' rx='11' ry='26'/%3E%3Cellipse cx='60' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='140' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='72' cy='72' rx='11' ry='26' transform='rotate(45 72 72)'/%3E%3Cellipse cx='128' cy='72' rx='11' ry='26' transform='rotate(-45 128 72)'/%3E%3Cellipse cx='72' cy='128' rx='11' ry='26' transform='rotate(-45 72 128)'/%3E%3Cellipse cx='128' cy='128' rx='11' ry='26' transform='rotate(45 128 128)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
-      pointer-events:none; opacity:0.35;
-    }
-    .events-content::after {
-      content:'';
-      position:absolute; bottom:-30px; left:-30px;
-      width:160px; height:160px;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23e8b4b0' opacity='0.4'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='60' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='140' rx='11' ry='26'/%3E%3Cellipse cx='60' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='140' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='72' cy='72' rx='11' ry='26' transform='rotate(45 72 72)'/%3E%3Cellipse cx='128' cy='72' rx='11' ry='26' transform='rotate(-45 128 72)'/%3E%3Cellipse cx='72' cy='128' rx='11' ry='26' transform='rotate(-45 72 128)'/%3E%3Cellipse cx='128' cy='128' rx='11' ry='26' transform='rotate(45 128 128)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
-      pointer-events:none; opacity:0.3;
-    }
-    .events-content p { font-size:1.2rem; color:var(--text-mid); line-height:1.9; margin-bottom:2rem; position:relative; z-index:1; }
-
-    .ig-link {
-      display:inline-block; padding:1rem 2.8rem;
-      background:var(--moss); color:var(--cream);
-      text-decoration:none; border-radius:50px;
-      letter-spacing:2px; font-size:0.82rem; font-weight:600;
-      text-transform:uppercase; transition:all 0.3s;
-      box-shadow:0 6px 20px rgba(74,107,63,0.25);
-      position:relative; z-index:1;
-    }
-    .ig-link:hover { background:var(--sage); transform:translateY(-3px); box-shadow:0 12px 30px rgba(74,107,63,0.3); }
-
-    .form-label { display:block; margin-bottom:0.5rem; color:var(--moss); font-weight:500; font-size:0.9rem; }
-    .form-input {
-      width:100%; padding:0.8rem 1rem;
-      background:rgba(255,255,255,0.85);
-      border:1.5px solid var(--border); border-radius:10px;
-      color:var(--text-dark); font-family:'Jost',sans-serif;
-      font-size:0.95rem; transition:border-color 0.3s; outline:none;
-    }
-    .form-input:focus { border-color:var(--sage); background:#fff; }
-
-    /* ── Story ── */
-    .story-content {
-      max-width:680px; margin:0 auto; text-align:center;
-      font-family:'Cormorant Garamond',serif; font-size:1.4rem;
-      line-height:2; padding:3rem;
-      background:linear-gradient(135deg,rgba(214,236,196,0.35) 0%,rgba(255,255,255,0.6) 100%);
-      border-radius:20px; border-left:4px solid var(--sage-light);
-      color:var(--text-dark); font-style:italic;
-      position:relative; overflow:hidden;
-    }
-    .story-content::before {
-      content:'';
-      position:absolute; top:-20px; left:-20px;
-      width:120px; height:120px;
-      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%237a9e6e' opacity='0.25'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='60' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='140' rx='11' ry='26'/%3E%3Cellipse cx='60' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='140' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='72' cy='72' rx='11' ry='26' transform='rotate(45 72 72)'/%3E%3Cellipse cx='128' cy='72' rx='11' ry='26' transform='rotate(-45 128 72)'/%3E%3Cellipse cx='72' cy='128' rx='11' ry='26' transform='rotate(-45 72 128)'/%3E%3Cellipse cx='128' cy='128' rx='11' ry='26' transform='rotate(45 128 128)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+    /* Flowers in all four corners of events box */
+    .events-content::before,.events-content::after{
+      content:'';position:absolute;width:180px;height:180px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23c4a8e0' opacity='0.25'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='58' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='142' rx='11' ry='26'/%3E%3Cellipse cx='58' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='142' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='71' cy='71' rx='11' ry='26' transform='rotate(45 71 71)'/%3E%3Cellipse cx='129' cy='71' rx='11' ry='26' transform='rotate(-45 129 71)'/%3E%3Cellipse cx='71' cy='129' rx='11' ry='26' transform='rotate(-45 71 129)'/%3E%3Cellipse cx='129' cy='129' rx='11' ry='26' transform='rotate(45 129 129)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
       pointer-events:none;
     }
-    .story-content p { position:relative; z-index:1; }
+    .events-content::before{top:-30px;right:-30px;}
+    .events-content::after{bottom:-30px;left:-30px;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23e8a0c0' opacity='0.28'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='58' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='142' rx='11' ry='26'/%3E%3Cellipse cx='58' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='142' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='71' cy='71' rx='11' ry='26' transform='rotate(45 71 71)'/%3E%3Cellipse cx='129' cy='71' rx='11' ry='26' transform='rotate(-45 129 71)'/%3E%3Cellipse cx='71' cy='129' rx='11' ry='26' transform='rotate(-45 71 129)'/%3E%3Cellipse cx='129' cy='129' rx='11' ry='26' transform='rotate(45 129 129)'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .events-content p{font-size:1.2rem;color:var(--text-mid);line-height:1.9;margin-bottom:2rem;position:relative;z-index:1;}
+
+    .ig-link{
+      display:inline-block;padding:1rem 2.8rem;
+      background:linear-gradient(135deg,var(--plum),var(--lavender));
+      color:#fff;text-decoration:none;border-radius:50px;
+      letter-spacing:2px;font-size:.82rem;font-weight:600;
+      text-transform:uppercase;transition:all .3s;
+      box-shadow:0 6px 22px rgba(94,61,133,.3);
+      position:relative;z-index:1;
+    }
+    .ig-link:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(94,61,133,.38);}
+
+    .form-label{display:block;margin-bottom:.5rem;color:var(--plum);font-weight:500;font-size:.9rem;}
+    .form-input{
+      width:100%;padding:.8rem 1rem;
+      background:rgba(255,255,255,.88);
+      border:1.5px solid rgba(196,168,224,.4);
+      border-radius:12px;color:var(--text-dark);
+      font-family:'Jost',sans-serif;font-size:.95rem;
+      transition:border-color .3s;outline:none;
+    }
+    .form-input:focus{border-color:var(--lavender);background:#fff;}
+
+    /* ── Story ── */
+    .story-content{
+      max-width:680px;margin:0 auto;text-align:center;
+      font-family:'Cormorant Garamond',serif;font-size:1.4rem;
+      line-height:2;padding:3rem;
+      background:linear-gradient(135deg,rgba(234,214,245,.35) 0%,rgba(255,255,255,.65) 100%);
+      border-radius:22px;
+      border:1px solid rgba(196,168,224,.3);
+      color:var(--text-dark);font-style:italic;
+      position:relative;overflow:hidden;
+    }
+    .story-content::before{
+      content:'';position:absolute;top:-20px;left:-20px;
+      width:130px;height:130px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%239171bf' opacity='0.18'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='58' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='142' rx='11' ry='26'/%3E%3Cellipse cx='58' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='142' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='71' cy='71' rx='11' ry='26' transform='rotate(45 71 71)'/%3E%3Cellipse cx='129' cy='71' rx='11' ry='26' transform='rotate(-45 129 71)'/%3E%3Cellipse cx='71' cy='129' rx='11' ry='26' transform='rotate(-45 71 129)'/%3E%3Cellipse cx='129' cy='129' rx='11' ry='26' transform='rotate(45 129 129)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events:none;
+    }
+    .story-content::after{
+      content:'';position:absolute;bottom:-20px;right:-20px;
+      width:130px;height:130px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='%23e8a0c0' opacity='0.18'%3E%3Ccircle cx='100' cy='100' r='12'/%3E%3Cellipse cx='100' cy='58' rx='11' ry='26'/%3E%3Cellipse cx='100' cy='142' rx='11' ry='26'/%3E%3Cellipse cx='58' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='142' cy='100' rx='26' ry='11'/%3E%3Cellipse cx='71' cy='71' rx='11' ry='26' transform='rotate(45 71 71)'/%3E%3Cellipse cx='129' cy='71' rx='11' ry='26' transform='rotate(-45 129 71)'/%3E%3Cellipse cx='71' cy='129' rx='11' ry='26' transform='rotate(-45 71 129)'/%3E%3Cellipse cx='129' cy='129' rx='11' ry='26' transform='rotate(45 129 129)'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+      pointer-events:none;
+    }
+    .story-content p{position:relative;z-index:1;}
 
     /* ── Footer ── */
-    footer {
-      background:var(--moss); color:rgba(255,255,255,0.85);
-      text-align:center; padding:2.5rem 1rem;
-      margin-top:5rem; font-size:0.85rem; letter-spacing:2px;
-      position:relative; overflow:hidden;
+    footer{
+      background:linear-gradient(135deg,var(--plum) 0%,#7a3e9e 100%);
+      color:rgba(255,255,255,.88);
+      text-align:center;padding:2.5rem 1rem;
+      margin-top:5rem;font-size:.85rem;letter-spacing:2px;
+      position:relative;overflow:hidden;
     }
-    footer::before {
-      content:'🌸 · 🌿 · 🌸 · 🌿 · 🌸 · 🌿 · 🌸 · 🌿 · 🌸 · 🌿 · 🌸';
-      display:block; font-size:0.9rem; opacity:0.4;
-      margin-bottom:0.75rem; letter-spacing:4px;
+    footer::before{
+      content:'🌸 🌷 ✿ 🌺 🌸 🌷 ✿ 🌺 🌸 🌷 ✿ 🌺 🌸';
+      display:block;font-size:1rem;opacity:.4;
+      margin-bottom:.75rem;letter-spacing:3px;
+    }
+    footer::after{
+      content:'✿ 🌸 🌷 🌺 ✿ 🌸 🌷 🌺 ✿ 🌸 🌷 🌺 ✿';
+      display:block;font-size:1rem;opacity:.4;
+      margin-top:.75rem;letter-spacing:3px;
     }
 
     /* ── Responsive ── */
-    @media (max-width:768px) {
-      .hero h1 { font-size:3.2rem; letter-spacing:6px; }
-      h2 { font-size:2.2rem; }
-      .nav-links { gap:1rem; font-size:0.78rem; }
-      .nav-container { flex-direction:column; gap:0.8rem; }
-      .special-title { font-size:2rem; }
-      .section-hero { height:200px; }
-      .menu-grid,.cocktails-showcase { grid-template-columns:1fr; }
-      .hero-flower.f1,.hero-flower.f2 { width:180px; }
-      .corner-floral { width:140px; }
-      .banner-flower-l,.banner-flower-r { display:none; }
+    @media(max-width:768px){
+      .hero h1{font-size:3.2rem;letter-spacing:6px;}
+      h2{font-size:2.2rem;}
+      .nav-links{gap:1rem;font-size:.78rem;}
+      .nav-container{flex-direction:column;gap:.8rem;}
+      .special-title{font-size:2rem;}
+      .section-hero{height:200px;}
+      .menu-grid,.cocktails-showcase{grid-template-columns:1fr;}
+      .hero-flower.f1,.hero-flower.f2{width:200px;}
+      .corner-floral{width:150px;}
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Corner bouquets (SVG botanical) ── -->
-  <div class="corner-floral tl">
-    <svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-      <!-- stem -->
-      <path d="M20 200 Q60 120 100 80" stroke="#7a9e6e" stroke-width="2.5" fill="none" opacity="0.7"/>
-      <path d="M20 200 Q40 150 70 130" stroke="#7a9e6e" stroke-width="2" fill="none" opacity="0.5"/>
-      <path d="M20 200 Q80 160 120 110" stroke="#7a9e6e" stroke-width="1.5" fill="none" opacity="0.4"/>
-      <!-- leaves -->
-      <ellipse cx="55" cy="145" rx="16" ry="8" fill="#a8c490" opacity="0.6" transform="rotate(-35 55 145)"/>
-      <ellipse cx="85" cy="115" rx="14" ry="7" fill="#7a9e6e" opacity="0.55" transform="rotate(-50 85 115)"/>
-      <ellipse cx="45" cy="165" rx="12" ry="6" fill="#a8c490" opacity="0.5" transform="rotate(-20 45 165)"/>
-      <!-- big rose -->
-      <g transform="translate(100,80)">
-        <ellipse cx="0" cy="-18" rx="10" ry="18" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="0" cy="18"  rx="10" ry="18" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="-18" cy="0" rx="18" ry="10" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="18"  cy="0" rx="18" ry="10" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="-13" cy="-13" rx="10" ry="18" fill="#f5ddd9" opacity="0.65" transform="rotate(45 -13 -13)"/>
-        <ellipse cx="13"  cy="-13" rx="10" ry="18" fill="#f5ddd9" opacity="0.65" transform="rotate(-45 13 -13)"/>
-        <ellipse cx="-13" cy="13"  rx="10" ry="18" fill="#f5ddd9" opacity="0.65" transform="rotate(-45 -13 13)"/>
-        <ellipse cx="13"  cy="13"  rx="10" ry="18" fill="#f5ddd9" opacity="0.65" transform="rotate(45 13 13)"/>
-        <circle cx="0" cy="0" r="9" fill="#c4835a" opacity="0.5"/>
-      </g>
-      <!-- small flower -->
-      <g transform="translate(62,128)">
-        <ellipse cx="0" cy="-10" rx="6" ry="10" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="0" cy="10"  rx="6" ry="10" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="-10" cy="0" rx="10" ry="6" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="10"  cy="0" rx="10" ry="6" fill="#a8c490" opacity="0.7"/>
-        <circle cx="0" cy="0" r="5" fill="#faf6ef" opacity="0.8"/>
-      </g>
-      <!-- bud -->
-      <ellipse cx="78" cy="98" rx="7" ry="11" fill="#e8b4b0" opacity="0.6" transform="rotate(-20 78 98)"/>
-      <!-- dots -->
-      <circle cx="40" cy="175" r="2.5" fill="#e8b4b0" opacity="0.5"/>
-      <circle cx="115" cy="65" r="2" fill="#a8c490" opacity="0.5"/>
-    </svg>
+<!-- ═══════════════ CORNER BOUQUETS ═══════════════ -->
+<div class="corner-floral tl">
+  <svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 225 Q55 140 110 90 Q160 50 210 20" stroke="#9171bf" stroke-width="2.5" fill="none" opacity=".6"/>
+    <path d="M15 225 Q45 175 80 150" stroke="#c4a8e0" stroke-width="1.8" fill="none" opacity=".45"/>
+    <path d="M15 225 Q80 190 130 130" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".35"/>
+    <!-- leaves -->
+    <ellipse cx="65" cy="170" rx="20" ry="9" fill="#c4a8e0" opacity=".6" transform="rotate(-40 65 170)"/>
+    <ellipse cx="100" cy="135" rx="17" ry="8" fill="#9171bf" opacity=".5" transform="rotate(-55 100 135)"/>
+    <ellipse cx="45" cy="195" rx="14" ry="6" fill="#ead6f5" opacity=".55" transform="rotate(-22 45 195)"/>
+    <ellipse cx="148" cy="95" rx="14" ry="6" fill="#c4a8e0" opacity=".45" transform="rotate(-65 148 95)"/>
+    <!-- big lavender flower -->
+    <g transform="translate(110,90)">
+      <ellipse cx="0" cy="-22" rx="12" ry="22" fill="#c4a8e0" opacity=".82"/>
+      <ellipse cx="0" cy="22"  rx="12" ry="22" fill="#c4a8e0" opacity=".82"/>
+      <ellipse cx="-22" cy="0" rx="22" ry="12" fill="#c4a8e0" opacity=".82"/>
+      <ellipse cx="22"  cy="0" rx="22" ry="12" fill="#c4a8e0" opacity=".82"/>
+      <ellipse cx="-16" cy="-16" rx="12" ry="22" fill="#ead6f5" opacity=".7" transform="rotate(45 -16 -16)"/>
+      <ellipse cx="16"  cy="-16" rx="12" ry="22" fill="#ead6f5" opacity=".7" transform="rotate(-45 16 -16)"/>
+      <ellipse cx="-16" cy="16"  rx="12" ry="22" fill="#ead6f5" opacity=".7" transform="rotate(-45 -16 16)"/>
+      <ellipse cx="16"  cy="16"  rx="12" ry="22" fill="#ead6f5" opacity=".7" transform="rotate(45 16 16)"/>
+      <circle cx="0" cy="0" r="10" fill="#b06090" opacity=".55"/>
+    </g>
+    <!-- rose blossom -->
+    <g transform="translate(72,148)">
+      <ellipse cx="0" cy="-13" rx="7.5" ry="13" fill="#e8a0c0" opacity=".75"/>
+      <ellipse cx="0" cy="13"  rx="7.5" ry="13" fill="#e8a0c0" opacity=".75"/>
+      <ellipse cx="-13" cy="0" rx="13" ry="7.5" fill="#e8a0c0" opacity=".75"/>
+      <ellipse cx="13"  cy="0" rx="13" ry="7.5" fill="#e8a0c0" opacity=".75"/>
+      <ellipse cx="-9" cy="-9" rx="7.5" ry="13" fill="#f2dcfd" opacity=".65" transform="rotate(45 -9 -9)"/>
+      <ellipse cx="9"  cy="-9" rx="7.5" ry="13" fill="#f2dcfd" opacity=".65" transform="rotate(-45 9 -9)"/>
+      <ellipse cx="-9" cy="9"  rx="7.5" ry="13" fill="#f2dcfd" opacity=".65" transform="rotate(-45 -9 9)"/>
+      <ellipse cx="9"  cy="9"  rx="7.5" ry="13" fill="#f2dcfd" opacity=".65" transform="rotate(45 9 9)"/>
+      <circle cx="0" cy="0" r="6.5" fill="#b06090" opacity=".5"/>
+    </g>
+    <!-- tiny mauve flower -->
+    <g transform="translate(165,55)">
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="0" cy="10"  rx="5.5" ry="10" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="-10" cy="0" rx="10" ry="5.5" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="10"  cy="0" rx="10" ry="5.5" fill="#c084b0" opacity=".7"/>
+      <circle cx="0" cy="0" r="4.5" fill="#fdf8ff" opacity=".85"/>
+    </g>
+    <!-- bud -->
+    <ellipse cx="92" cy="118" rx="6.5" ry="10" fill="#e8a0c0" opacity=".6" transform="rotate(-22 92 118)"/>
+    <ellipse cx="128" cy="72" rx="5.5" ry="9" fill="#c4a8e0" opacity=".55" transform="rotate(-55 128 72)"/>
+    <!-- dots -->
+    <circle cx="38" cy="208" r="2.5" fill="#e8a0c0" opacity=".5"/>
+    <circle cx="185" cy="32" r="2" fill="#c4a8e0" opacity=".5"/>
+    <circle cx="50" cy="152" r="1.8" fill="#c084b0" opacity=".45"/>
+  </svg>
+</div>
+
+<div class="corner-floral tr">
+  <svg width="240" height="240" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 225 Q55 140 110 90 Q160 50 210 20" stroke="#9171bf" stroke-width="2.5" fill="none" opacity=".55"/>
+    <path d="M15 225 Q45 175 80 150" stroke="#c4a8e0" stroke-width="1.8" fill="none" opacity=".4"/>
+    <ellipse cx="65" cy="170" rx="20" ry="9" fill="#ead6f5" opacity=".6" transform="rotate(-40 65 170)"/>
+    <ellipse cx="100" cy="135" rx="17" ry="8" fill="#c4a8e0" opacity=".5" transform="rotate(-55 100 135)"/>
+    <g transform="translate(110,90)">
+      <ellipse cx="0" cy="-22" rx="12" ry="22" fill="#e8a0c0" opacity=".8"/>
+      <ellipse cx="0" cy="22"  rx="12" ry="22" fill="#e8a0c0" opacity=".8"/>
+      <ellipse cx="-22" cy="0" rx="22" ry="12" fill="#e8a0c0" opacity=".8"/>
+      <ellipse cx="22"  cy="0" rx="22" ry="12" fill="#e8a0c0" opacity=".8"/>
+      <ellipse cx="-16" cy="-16" rx="12" ry="22" fill="#f2dcfd" opacity=".7" transform="rotate(45 -16 -16)"/>
+      <ellipse cx="16"  cy="-16" rx="12" ry="22" fill="#f2dcfd" opacity=".7" transform="rotate(-45 16 -16)"/>
+      <ellipse cx="-16" cy="16"  rx="12" ry="22" fill="#f2dcfd" opacity=".7" transform="rotate(-45 -16 16)"/>
+      <ellipse cx="16"  cy="16"  rx="12" ry="22" fill="#f2dcfd" opacity=".7" transform="rotate(45 16 16)"/>
+      <circle cx="0" cy="0" r="10" fill="#9171bf" opacity=".5"/>
+    </g>
+    <g transform="translate(72,148)">
+      <ellipse cx="0" cy="-13" rx="7.5" ry="13" fill="#c4a8e0" opacity=".75"/>
+      <ellipse cx="0" cy="13"  rx="7.5" ry="13" fill="#c4a8e0" opacity=".75"/>
+      <ellipse cx="-13" cy="0" rx="13" ry="7.5" fill="#c4a8e0" opacity=".75"/>
+      <ellipse cx="13"  cy="0" rx="13" ry="7.5" fill="#c4a8e0" opacity=".75"/>
+      <circle cx="0" cy="0" r="6" fill="#5e3d85" opacity=".45"/>
+    </g>
+    <ellipse cx="92" cy="118" rx="6.5" ry="10" fill="#c4a8e0" opacity=".6" transform="rotate(-22 92 118)"/>
+    <circle cx="38" cy="208" r="2.5" fill="#c084b0" opacity=".5"/>
+  </svg>
+</div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="logo-section">
+      <img src="assets/logo.png" alt="Tipsy Village Logo" class="logo-img">
+      <span class="logo-text">Tipsy Village</span>
+    </div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#cafe">Café</a>
+      <a href="#bar">Bar</a>
+      <a href="#events">Events</a>
+      <a href="#story">Story</a>
+      <a href="https://www.instagram.com/tipsy.village.cafe/" target="_blank">Instagram</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<header class="hero" id="home">
+
+  <!-- Top garland strip -->
+  <svg class="hero-garland-top" height="60" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 30 Q90 5 180 30 Q270 55 360 30 Q450 5 540 30 Q630 55 720 30 Q810 5 900 30 Q990 55 1080 30 Q1170 5 1260 30 Q1350 55 1440 30" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".5"/>
+    <!-- flower dots along vine -->
+    <g fill="#e8a0c0" opacity=".6">
+      <circle cx="90" cy="7" r="4"/><circle cx="270" cy="53" r="3.5"/><circle cx="450" cy="7" r="4"/>
+      <circle cx="630" cy="53" r="3.5"/><circle cx="810" cy="7" r="4"/><circle cx="990" cy="53" r="3.5"/>
+      <circle cx="1170" cy="7" r="4"/><circle cx="1350" cy="53" r="3.5"/>
+    </g>
+    <g fill="#c4a8e0" opacity=".5">
+      <circle cx="180" cy="30" r="5"/><circle cx="360" cy="30" r="5"/><circle cx="540" cy="30" r="5"/>
+      <circle cx="720" cy="30" r="6"/><circle cx="900" cy="30" r="5"/><circle cx="1080" cy="30" r="5"/>
+      <circle cx="1260" cy="30" r="5"/>
+    </g>
+  </svg>
+
+  <!-- Bottom garland strip -->
+  <svg class="hero-garland-bot" height="60" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 30 Q90 5 180 30 Q270 55 360 30 Q450 5 540 30 Q630 55 720 30 Q810 5 900 30 Q990 55 1080 30 Q1170 5 1260 30 Q1350 55 1440 30" stroke="#e8a0c0" stroke-width="1.5" fill="none" opacity=".45"/>
+    <g fill="#c084b0" opacity=".55">
+      <circle cx="90" cy="7" r="3.5"/><circle cx="270" cy="53" r="4"/><circle cx="450" cy="7" r="3.5"/>
+      <circle cx="630" cy="53" r="4"/><circle cx="810" cy="7" r="3.5"/><circle cx="990" cy="53" r="4"/>
+      <circle cx="1170" cy="7" r="3.5"/>
+    </g>
+    <g fill="#e8a0c0" opacity=".5">
+      <circle cx="180" cy="30" r="5"/><circle cx="360" cy="30" r="4.5"/><circle cx="540" cy="30" r="5"/>
+      <circle cx="720" cy="30" r="6"/><circle cx="900" cy="30" r="5"/><circle cx="1080" cy="30" r="4.5"/>
+      <circle cx="1260" cy="30" r="5"/>
+    </g>
+  </svg>
+
+  <!-- Large botanical SVGs -->
+  <svg class="hero-flower f1" width="360" height="360" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 340 Q80 220 170 150 Q240 95 310 40" stroke="#9171bf" stroke-width="3" fill="none" opacity=".65"/>
+    <path d="M20 340 Q65 270 105 235" stroke="#c4a8e0" stroke-width="2" fill="none" opacity=".45"/>
+    <path d="M20 340 Q100 290 150 230" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".35"/>
+    <ellipse cx="90" cy="250" rx="25" ry="11" fill="#c4a8e0" opacity=".6" transform="rotate(-42 90 250)"/>
+    <ellipse cx="140" cy="195" rx="22" ry="10" fill="#9171bf" opacity=".5" transform="rotate(-58 140 195)"/>
+    <ellipse cx="60" cy="290" rx="18" ry="8" fill="#ead6f5" opacity=".55" transform="rotate(-25 60 290)"/>
+    <ellipse cx="200" cy="120" rx="16" ry="7" fill="#c4a8e0" opacity=".45" transform="rotate(-70 200 120)"/>
+    <g transform="translate(170,148)">
+      <ellipse cx="0" cy="-28" rx="15" ry="28" fill="#c4a8e0" opacity=".85"/>
+      <ellipse cx="0" cy="28"  rx="15" ry="28" fill="#c4a8e0" opacity=".85"/>
+      <ellipse cx="-28" cy="0" rx="28" ry="15" fill="#c4a8e0" opacity=".85"/>
+      <ellipse cx="28"  cy="0" rx="28" ry="15" fill="#c4a8e0" opacity=".85"/>
+      <ellipse cx="-20" cy="-20" rx="15" ry="28" fill="#ead6f5" opacity=".75" transform="rotate(45 -20 -20)"/>
+      <ellipse cx="20"  cy="-20" rx="15" ry="28" fill="#ead6f5" opacity=".75" transform="rotate(-45 20 -20)"/>
+      <ellipse cx="-20" cy="20"  rx="15" ry="28" fill="#ead6f5" opacity=".75" transform="rotate(-45 -20 20)"/>
+      <ellipse cx="20"  cy="20"  rx="15" ry="28" fill="#ead6f5" opacity=".75" transform="rotate(45 20 20)"/>
+      <circle cx="0" cy="0" r="14" fill="#b06090" opacity=".6"/>
+    </g>
+    <g transform="translate(112,205)">
+      <ellipse cx="0" cy="-14" rx="8" ry="14" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="0" cy="14"  rx="8" ry="14" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="-14" cy="0" rx="14" ry="8" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="14"  cy="0" rx="14" ry="8" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="-10" cy="-10" rx="8" ry="14" fill="#f2dcfd" opacity=".68" transform="rotate(45 -10 -10)"/>
+      <ellipse cx="10"  cy="-10" rx="8" ry="14" fill="#f2dcfd" opacity=".68" transform="rotate(-45 10 -10)"/>
+      <ellipse cx="-10" cy="10"  rx="8" ry="14" fill="#f2dcfd" opacity=".68" transform="rotate(-45 -10 10)"/>
+      <ellipse cx="10"  cy="10"  rx="8" ry="14" fill="#f2dcfd" opacity=".68" transform="rotate(45 10 10)"/>
+      <circle cx="0" cy="0" r="7.5" fill="#b06090" opacity=".55"/>
+    </g>
+    <g transform="translate(250,85)">
+      <ellipse cx="0" cy="-17" rx="9" ry="17" fill="#e8a0c0" opacity=".7"/>
+      <ellipse cx="0" cy="17"  rx="9" ry="17" fill="#e8a0c0" opacity=".7"/>
+      <ellipse cx="-17" cy="0" rx="17" ry="9" fill="#e8a0c0" opacity=".7"/>
+      <ellipse cx="17"  cy="0" rx="17" ry="9" fill="#e8a0c0" opacity=".7"/>
+      <circle cx="0" cy="0" r="8" fill="#9171bf" opacity=".45"/>
+    </g>
+    <g transform="translate(200,165)">
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="0" cy="10"  rx="5.5" ry="10" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="-10" cy="0" rx="10" ry="5.5" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="10"  cy="0" rx="10" ry="5.5" fill="#c084b0" opacity=".7"/>
+      <circle cx="0" cy="0" r="5" fill="#fdf8ff" opacity=".9"/>
+    </g>
+    <ellipse cx="152" cy="122" rx="8" ry="13" fill="#e8a0c0" opacity=".6" transform="rotate(-28 152 122)"/>
+    <ellipse cx="76" cy="272" rx="6.5" ry="10" fill="#c4a8e0" opacity=".55" transform="rotate(-18 76 272)"/>
+    <circle cx="50" cy="308" r="3" fill="#e8a0c0" opacity=".5"/>
+    <circle cx="225" cy="60" r="2.5" fill="#c4a8e0" opacity=".5"/>
+    <circle cx="130" cy="170" r="2" fill="#c084b0" opacity=".45"/>
+  </svg>
+
+  <svg class="hero-flower f2" width="320" height="320" viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 340 Q80 220 170 150 Q240 95 310 40" stroke="#9171bf" stroke-width="3" fill="none" opacity=".6"/>
+    <ellipse cx="90" cy="250" rx="25" ry="11" fill="#ead6f5" opacity=".6" transform="rotate(-42 90 250)"/>
+    <ellipse cx="140" cy="195" rx="22" ry="10" fill="#c4a8e0" opacity=".5" transform="rotate(-58 140 195)"/>
+    <g transform="translate(170,148)">
+      <ellipse cx="0" cy="-28" rx="15" ry="28" fill="#e8a0c0" opacity=".82"/>
+      <ellipse cx="0" cy="28"  rx="15" ry="28" fill="#e8a0c0" opacity=".82"/>
+      <ellipse cx="-28" cy="0" rx="28" ry="15" fill="#e8a0c0" opacity=".82"/>
+      <ellipse cx="28"  cy="0" rx="28" ry="15" fill="#e8a0c0" opacity=".82"/>
+      <ellipse cx="-20" cy="-20" rx="15" ry="28" fill="#f2dcfd" opacity=".72" transform="rotate(45 -20 -20)"/>
+      <ellipse cx="20"  cy="-20" rx="15" ry="28" fill="#f2dcfd" opacity=".72" transform="rotate(-45 20 -20)"/>
+      <ellipse cx="-20" cy="20"  rx="15" ry="28" fill="#f2dcfd" opacity=".72" transform="rotate(-45 -20 20)"/>
+      <ellipse cx="20"  cy="20"  rx="15" ry="28" fill="#f2dcfd" opacity=".72" transform="rotate(45 20 20)"/>
+      <circle cx="0" cy="0" r="14" fill="#9171bf" opacity=".55"/>
+    </g>
+    <g transform="translate(112,205)">
+      <ellipse cx="0" cy="-14" rx="8" ry="14" fill="#c4a8e0" opacity=".78"/>
+      <ellipse cx="0" cy="14"  rx="8" ry="14" fill="#c4a8e0" opacity=".78"/>
+      <ellipse cx="-14" cy="0" rx="14" ry="8" fill="#c4a8e0" opacity=".78"/>
+      <ellipse cx="14"  cy="0" rx="14" ry="8" fill="#c4a8e0" opacity=".78"/>
+      <circle cx="0" cy="0" r="7" fill="#5e3d85" opacity=".45"/>
+    </g>
+    <ellipse cx="152" cy="122" rx="8" ry="13" fill="#c4a8e0" opacity=".6" transform="rotate(-28 152 122)"/>
+  </svg>
+
+  <svg class="hero-flower f3" width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 145 Q50 90 90 55" stroke="#c4a8e0" stroke-width="2" fill="none" opacity=".7"/>
+    <ellipse cx="45" cy="105" rx="14" ry="7" fill="#9171bf" opacity=".55" transform="rotate(-42 45 105)"/>
+    <g transform="translate(90,55)">
+      <ellipse cx="0" cy="-16" rx="9" ry="16" fill="#c4a8e0" opacity=".8"/>
+      <ellipse cx="0" cy="16"  rx="9" ry="16" fill="#c4a8e0" opacity=".8"/>
+      <ellipse cx="-16" cy="0" rx="16" ry="9" fill="#c4a8e0" opacity=".8"/>
+      <ellipse cx="16"  cy="0" rx="16" ry="9" fill="#c4a8e0" opacity=".8"/>
+      <ellipse cx="-11" cy="-11" rx="9" ry="16" fill="#ead6f5" opacity=".7" transform="rotate(45 -11 -11)"/>
+      <ellipse cx="11"  cy="-11" rx="9" ry="16" fill="#ead6f5" opacity=".7" transform="rotate(-45 11 -11)"/>
+      <ellipse cx="-11" cy="11"  rx="9" ry="16" fill="#ead6f5" opacity=".7" transform="rotate(-45 -11 11)"/>
+      <ellipse cx="11"  cy="11"  rx="9" ry="16" fill="#ead6f5" opacity=".7" transform="rotate(45 11 11)"/>
+      <circle cx="0" cy="0" r="8" fill="#b06090" opacity=".5"/>
+    </g>
+  </svg>
+
+  <svg class="hero-flower f4" width="175" height="175" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+    <path d="M15 145 Q50 90 90 55" stroke="#c4a8e0" stroke-width="2" fill="none" opacity=".65"/>
+    <ellipse cx="45" cy="105" rx="14" ry="7" fill="#c4a8e0" opacity=".55" transform="rotate(-42 45 105)"/>
+    <g transform="translate(90,55)">
+      <ellipse cx="0" cy="-16" rx="9" ry="16" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="0" cy="16"  rx="9" ry="16" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="-16" cy="0" rx="16" ry="9" fill="#e8a0c0" opacity=".78"/>
+      <ellipse cx="16"  cy="0" rx="16" ry="9" fill="#e8a0c0" opacity=".78"/>
+      <circle cx="0" cy="0" r="8" fill="#9171bf" opacity=".45"/>
+    </g>
+  </svg>
+
+  <!-- small central flower bud above title -->
+  <svg class="hero-flower f5" width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(45,45)">
+      <ellipse cx="0" cy="-16" rx="7" ry="16" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="0" cy="16"  rx="7" ry="16" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="-16" cy="0" rx="16" ry="7" fill="#c084b0" opacity=".7"/>
+      <ellipse cx="16"  cy="0" rx="16" ry="7" fill="#c084b0" opacity=".7"/>
+      <circle cx="0" cy="0" r="7" fill="#fdf8ff" opacity=".85"/>
+    </g>
+  </svg>
+
+  <div class="emoji-float emoji-1">🌸</div>
+  <div class="emoji-float emoji-2">🌷</div>
+  <div class="emoji-float emoji-3">🌺</div>
+  <div class="emoji-float emoji-4">🌼</div>
+  <div class="emoji-float emoji-5">✿</div>
+  <div class="emoji-float emoji-6">🌸</div>
+  <div class="emoji-float emoji-7">💜</div>
+
+  <div class="hero-content">
+    <h1>Tipsy Village</h1>
+    <p class="hero-sub">Café by day &nbsp;·&nbsp; Bar by night</p>
+    <p class="hero-tagline">Your neighborhood living room</p>
+  </div>
+  <div class="scroll-indicator"></div>
+</header>
+
+<!-- ═══════════════ SPRING BANNER ═══════════════ -->
+<div class="todays-special">
+  <!-- garland top -->
+  <svg class="banner-garland" height="28" viewBox="0 0 1440 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 14 Q60 2 120 14 Q180 26 240 14 Q300 2 360 14 Q420 26 480 14 Q540 2 600 14 Q660 26 720 14 Q780 2 840 14 Q900 26 960 14 Q1020 2 1080 14 Q1140 26 1200 14 Q1260 2 1320 14 Q1380 26 1440 14" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".7"/>
+    <g fill="#e8a0c0" opacity=".65">
+      <circle cx="60" cy="3" r="3.5"/><circle cx="180" cy="25" r="3"/><circle cx="300" cy="3" r="3.5"/>
+      <circle cx="420" cy="25" r="3"/><circle cx="540" cy="3" r="3.5"/><circle cx="660" cy="25" r="3"/>
+      <circle cx="780" cy="3" r="3.5"/><circle cx="900" cy="25" r="3"/><circle cx="1020" cy="3" r="3.5"/>
+      <circle cx="1140" cy="25" r="3"/><circle cx="1260" cy="3" r="3.5"/><circle cx="1380" cy="25" r="3"/>
+    </g>
+    <g fill="#c4a8e0" opacity=".6">
+      <circle cx="120" cy="14" r="4.5"/><circle cx="240" cy="14" r="4"/><circle cx="360" cy="14" r="4.5"/>
+      <circle cx="480" cy="14" r="4"/><circle cx="600" cy="14" r="4.5"/><circle cx="720" cy="14" r="5"/>
+      <circle cx="840" cy="14" r="4.5"/><circle cx="960" cy="14" r="4"/><circle cx="1080" cy="14" r="4.5"/>
+      <circle cx="1200" cy="14" r="4"/><circle cx="1320" cy="14" r="4.5"/>
+    </g>
+  </svg>
+  <!-- garland bottom -->
+  <svg class="banner-garland bot" height="28" viewBox="0 0 1440 28" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 14 Q60 2 120 14 Q180 26 240 14 Q300 2 360 14 Q420 26 480 14 Q540 2 600 14 Q660 26 720 14 Q780 2 840 14 Q900 26 960 14 Q1020 2 1080 14 Q1140 26 1200 14 Q1260 2 1320 14 Q1380 26 1440 14" stroke="#c084b0" stroke-width="1.5" fill="none" opacity=".6"/>
+    <g fill="#c084b0" opacity=".6"><circle cx="120" cy="14" r="4"/><circle cx="360" cy="14" r="4"/><circle cx="600" cy="14" r="4"/><circle cx="840" cy="14" r="4.5"/><circle cx="1080" cy="14" r="4"/><circle cx="1320" cy="14" r="4"/></g>
+  </svg>
+
+  <div class="special-label">🌱 Now Brewing · Spring Specials</div>
+  <div class="special-title">Spring Has Arrived <span class="special-emoji">🌸</span><span class="special-emoji">🌿</span><span class="special-emoji">🌼</span></div>
+  <p class="special-description">
+    Fresh blooms, fresh sips — meet our seasonal menu: Rose &amp; Lavender Lattes
+    <span class="special-emoji">🌹</span><span class="special-emoji">💜</span>,
+    Mango Matcha <span class="special-emoji">🥭</span>, and Coconut Cloud Coffee &amp; Matcha
+    <span class="special-emoji">🥥</span> — all $8, all made with in-house syrups.
+  </p>
+</div>
+
+<!-- ═══════════════ FLORAL DIVIDER ═══════════════ -->
+<div class="floral-divider">
+  <div class="divider-line"></div>
+  <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 20 Q40 8 80 20 Q120 32 150 20" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".6"/>
+    <path d="M10 20 Q40 32 80 20 Q120 8 150 20" stroke="#e8a0c0" stroke-width="1.5" fill="none" opacity=".55"/>
+    <g transform="translate(20,20)"><ellipse cx="0" cy="-8" rx="4" ry="8" fill="#c4a8e0" opacity=".7"/><ellipse cx="0" cy="8" rx="4" ry="8" fill="#c4a8e0" opacity=".7"/><ellipse cx="-8" cy="0" rx="8" ry="4" fill="#c4a8e0" opacity=".7"/><ellipse cx="8" cy="0" rx="8" ry="4" fill="#c4a8e0" opacity=".7"/><circle cx="0" cy="0" r="4" fill="#9171bf" opacity=".5"/></g>
+    <g transform="translate(80,20)"><ellipse cx="0" cy="-10" rx="5" ry="10" fill="#e8a0c0" opacity=".75"/><ellipse cx="0" cy="10" rx="5" ry="10" fill="#e8a0c0" opacity=".75"/><ellipse cx="-10" cy="0" rx="10" ry="5" fill="#e8a0c0" opacity=".75"/><ellipse cx="10" cy="0" rx="10" ry="5" fill="#e8a0c0" opacity=".75"/><ellipse cx="-7" cy="-7" rx="5" ry="10" fill="#f2dcfd" opacity=".65" transform="rotate(45 -7 -7)"/><ellipse cx="7" cy="-7" rx="5" ry="10" fill="#f2dcfd" opacity=".65" transform="rotate(-45 7 -7)"/><ellipse cx="-7" cy="7" rx="5" ry="10" fill="#f2dcfd" opacity=".65" transform="rotate(-45 -7 7)"/><ellipse cx="7" cy="7" rx="5" ry="10" fill="#f2dcfd" opacity=".65" transform="rotate(45 7 7)"/><circle cx="0" cy="0" r="5" fill="#b06090" opacity=".55"/></g>
+    <g transform="translate(140,20)"><ellipse cx="0" cy="-8" rx="4" ry="8" fill="#c084b0" opacity=".7"/><ellipse cx="0" cy="8" rx="4" ry="8" fill="#c084b0" opacity=".7"/><ellipse cx="-8" cy="0" rx="8" ry="4" fill="#c084b0" opacity=".7"/><ellipse cx="8" cy="0" rx="8" ry="4" fill="#c084b0" opacity=".7"/><circle cx="0" cy="0" r="4" fill="#5e3d85" opacity=".5"/></g>
+  </svg>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ═══════════════ CAFÉ ═══════════════ -->
+<section id="cafe">
+  <!-- side bloom accents -->
+  <svg class="section-bloom left" width="130" height="220" viewBox="0 0 130 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M65 210 Q40 150 30 80 Q25 40 35 10" stroke="#c4a8e0" stroke-width="2" fill="none" opacity=".7"/>
+    <ellipse cx="38" cy="160" rx="18" ry="8" fill="#c4a8e0" opacity=".6" transform="rotate(20 38 160)"/>
+    <ellipse cx="32" cy="110" rx="15" ry="7" fill="#9171bf" opacity=".5" transform="rotate(10 32 110)"/>
+    <g transform="translate(55,60)"><ellipse cx="0" cy="-18" rx="10" ry="18" fill="#e8a0c0" opacity=".75"/><ellipse cx="0" cy="18" rx="10" ry="18" fill="#e8a0c0" opacity=".75"/><ellipse cx="-18" cy="0" rx="18" ry="10" fill="#e8a0c0" opacity=".75"/><ellipse cx="18" cy="0" rx="18" ry="10" fill="#e8a0c0" opacity=".75"/><circle cx="0" cy="0" r="9" fill="#b06090" opacity=".5"/></g>
+    <g transform="translate(42,175)"><ellipse cx="0" cy="-10" rx="5" ry="10" fill="#c4a8e0" opacity=".7"/><ellipse cx="0" cy="10" rx="5" ry="10" fill="#c4a8e0" opacity=".7"/><ellipse cx="-10" cy="0" rx="10" ry="5" fill="#c4a8e0" opacity=".7"/><ellipse cx="10" cy="0" rx="10" ry="5" fill="#c4a8e0" opacity=".7"/><circle cx="0" cy="0" r="4.5" fill="#fdf8ff" opacity=".85"/></g>
+  </svg>
+  <svg class="section-bloom right" width="130" height="220" viewBox="0 0 130 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M65 210 Q90 150 100 80 Q105 40 95 10" stroke="#c4a8e0" stroke-width="2" fill="none" opacity=".65"/>
+    <ellipse cx="92" cy="160" rx="18" ry="8" fill="#ead6f5" opacity=".6" transform="rotate(-20 92 160)"/>
+    <g transform="translate(75,60)"><ellipse cx="0" cy="-18" rx="10" ry="18" fill="#c4a8e0" opacity=".75"/><ellipse cx="0" cy="18" rx="10" ry="18" fill="#c4a8e0" opacity=".75"/><ellipse cx="-18" cy="0" rx="18" ry="10" fill="#c4a8e0" opacity=".75"/><ellipse cx="18" cy="0" rx="18" ry="10" fill="#c4a8e0" opacity=".75"/><circle cx="0" cy="0" r="9" fill="#9171bf" opacity=".45"/></g>
+  </svg>
+
+  <div class="section-header">
+    <h2>Café Menu</h2>
+    <p class="section-intro">Exceptional coffee, thoughtfully crafted teas, and specialty drinks</p>
+  </div>
+  <div class="section-hero"><img src="assets/specialty_coffee.png" alt="Specialty Coffee"></div>
+
+  <div class="menu-grid">
+    <div class="menu-category">
+      <h3 class="category-title">Coffee &amp; Tea</h3>
+      <div class="menu-item"><div class="item-name">Espresso</div><div class="item-price">$3</div></div>
+      <div class="menu-item"><div class="item-name">Americano</div><div class="item-price">$4</div></div>
+      <div class="menu-item"><div class="item-name">Cortado</div><div class="item-price">$4</div></div>
+      <div class="menu-item"><div class="item-name">Flat White</div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">Cappuccino</div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">Latte</div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-name">Mocha</div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-name">Tea</div><div class="item-price">$4</div></div>
+      <div class="menu-item"><div class="item-name">Chai Latte</div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-name">Matcha Latte</div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Hot Chocolate</div><div class="item-price">$8</div></div>
+    </div>
+
+    <div class="menu-category">
+      <h3 class="category-title">Specialty Drinks</h3>
+      <p style="font-size:.82rem;color:var(--text-light);margin-bottom:1rem;font-style:italic;position:relative;z-index:1;">All syrups made in-house · Specialty matcha available</p>
+      <div class="menu-item"><div class="item-name">Brûlée Banana Latte / Matcha<span class="item-note">Caramelized banana sweetness with cold foam</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Blueberry Pancake Latte<span class="item-note">Blueberry & brown butter cold foam</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Cardamom Latte<span class="item-note">Warm, aromatic spice for the soul</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Honey Cinnamon Latte / Matcha<span class="item-note">Sweet & spiced, naturally comforting</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Brown Butter Latte / Matcha<span class="item-note">Nutty indulgence, buttery foam & chocolate drizzle</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Sweet Spanish Latte / Matcha<span class="item-note">Silky condensed milk sweetness</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Coconut Cloud Coffee<span class="item-note">Tropical coconut water & espresso foam</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Coconut Cloud Matcha<span class="item-note">Refreshing coconut water meets vibrant matcha</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Strawberry Matcha<span class="item-note">Berry-bright & energizing</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Blueberry Matcha<span class="item-note">Antioxidant powerhouse, gorgeously purple</span></div><div class="item-price">$8</div></div>
+    </div>
+
+    <div class="menu-category spring-card">
+      <h3 class="category-title">🌸 Spring Specials 🌷</h3>
+      <p style="font-size:.82rem;color:var(--lavender);margin-bottom:1.25rem;font-style:italic;position:relative;z-index:1;">Fresh seasonal syrups made in-house · All $8</p>
+      <div class="menu-item"><div class="item-name">Rose Latte / Matcha<span class="item-note">Delicate floral sweetness, soft and dreamy</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Lavender Latte / Matcha<span class="item-note">Calming lavender with a gentle, aromatic finish</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Mango Matcha<span class="item-note">Tropical mango meets vibrant, earthy matcha</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item" style="border-bottom:none;"><div class="item-name">Coconut Cloud Coffee / Matcha<span class="item-note">Refreshing coconut water with espresso or matcha foam</span></div><div class="item-price">$8</div></div>
+    </div>
+
+    <div class="menu-category">
+      <h3 class="category-title">Pastries &amp; Toast</h3>
+      <div class="menu-item"><div class="item-name">Regular Croissant<span class="item-note">Buttery, flaky, classic</span></div><div class="item-price">$4</div></div>
+      <div class="menu-item"><div class="item-name">Blueberry / Banana Muffin<span class="item-note">Made in-house, moist & delicious</span></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">Chicken Empanadas<span class="item-note">Savory, handheld perfection, made in-house</span></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">Vegan Croissant<span class="item-note">Plant-based & perfectly flaky</span></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-name">Almond Chocolate Croissant<span class="item-note">Decadent almond cream & rich chocolate</span></div><div class="item-price">$7</div></div>
+      <div class="menu-item"><div class="item-name">Avocado Toast<span class="item-note">Smashed avocado, sea salt, lemon, olive oil on sourdough</span></div><div class="item-price">$8</div></div>
+      <div class="menu-item"><div class="item-name">Cream Cheese Toast<span class="item-note">Creamy spread on toasted perfection</span></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">PB&J Toast<span class="item-note">Nostalgic comfort, elevated</span></div><div class="item-price">$6</div></div>
+    </div>
+  </div>
+  <div class="section-icon">🌸 ☕ 🌷 ☕ 🌸</div>
+</section>
+
+<!-- ═══════════════ FLORAL DIVIDER ═══════════════ -->
+<div class="floral-divider">
+  <div class="divider-line"></div>
+  <svg width="200" height="40" viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 20 Q50 5 100 20 Q150 35 195 20" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".6"/>
+    <path d="M5 20 Q50 35 100 20 Q150 5 195 20" stroke="#e8a0c0" stroke-width="1.5" fill="none" opacity=".5"/>
+    <g transform="translate(30,12)"><ellipse cx="0" cy="-6" rx="3.5" ry="6" fill="#c4a8e0" opacity=".7"/><ellipse cx="0" cy="6" rx="3.5" ry="6" fill="#c4a8e0" opacity=".7"/><ellipse cx="-6" cy="0" rx="6" ry="3.5" fill="#c4a8e0" opacity=".7"/><ellipse cx="6" cy="0" rx="6" ry="3.5" fill="#c4a8e0" opacity=".7"/><circle cx="0" cy="0" r="3" fill="#9171bf" opacity=".5"/></g>
+    <g transform="translate(100,20)"><ellipse cx="0" cy="-11" rx="6" ry="11" fill="#e8a0c0" opacity=".75"/><ellipse cx="0" cy="11" rx="6" ry="11" fill="#e8a0c0" opacity=".75"/><ellipse cx="-11" cy="0" rx="11" ry="6" fill="#e8a0c0" opacity=".75"/><ellipse cx="11" cy="0" rx="11" ry="6" fill="#e8a0c0" opacity=".75"/><ellipse cx="-8" cy="-8" rx="6" ry="11" fill="#f2dcfd" opacity=".65" transform="rotate(45 -8 -8)"/><ellipse cx="8" cy="-8" rx="6" ry="11" fill="#f2dcfd" opacity=".65" transform="rotate(-45 8 -8)"/><ellipse cx="-8" cy="8" rx="6" ry="11" fill="#f2dcfd" opacity=".65" transform="rotate(-45 -8 8)"/><ellipse cx="8" cy="8" rx="6" ry="11" fill="#f2dcfd" opacity=".65" transform="rotate(45 8 8)"/><circle cx="0" cy="0" r="5.5" fill="#b06090" opacity=".55"/></g>
+    <g transform="translate(170,28)"><ellipse cx="0" cy="-6" rx="3.5" ry="6" fill="#c084b0" opacity=".7"/><ellipse cx="0" cy="6" rx="3.5" ry="6" fill="#c084b0" opacity=".7"/><ellipse cx="-6" cy="0" rx="6" ry="3.5" fill="#c084b0" opacity=".7"/><ellipse cx="6" cy="0" rx="6" ry="3.5" fill="#c084b0" opacity=".7"/><circle cx="0" cy="0" r="3" fill="#5e3d85" opacity=".45"/></g>
+  </svg>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ═══════════════ BAR ═══════════════ -->
+<section id="bar">
+  <svg class="section-bloom left" width="130" height="220" viewBox="0 0 130 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M65 210 Q40 150 30 80 Q25 40 35 10" stroke="#e8a0c0" stroke-width="2" fill="none" opacity=".65"/>
+    <ellipse cx="38" cy="160" rx="18" ry="8" fill="#e8a0c0" opacity=".55" transform="rotate(20 38 160)"/>
+    <g transform="translate(55,60)"><ellipse cx="0" cy="-18" rx="10" ry="18" fill="#c4a8e0" opacity=".75"/><ellipse cx="0" cy="18" rx="10" ry="18" fill="#c4a8e0" opacity=".75"/><ellipse cx="-18" cy="0" rx="18" ry="10" fill="#c4a8e0" opacity=".75"/><ellipse cx="18" cy="0" rx="18" ry="10" fill="#c4a8e0" opacity=".75"/><circle cx="0" cy="0" r="9" fill="#9171bf" opacity=".45"/></g>
+  </svg>
+  <svg class="section-bloom right" width="130" height="220" viewBox="0 0 130 220" xmlns="http://www.w3.org/2000/svg">
+    <path d="M65 210 Q90 150 100 80 Q105 40 95 10" stroke="#e8a0c0" stroke-width="2" fill="none" opacity=".6"/>
+    <ellipse cx="92" cy="160" rx="18" ry="8" fill="#c084b0" opacity=".55" transform="rotate(-20 92 160)"/>
+    <g transform="translate(75,60)"><ellipse cx="0" cy="-18" rx="10" ry="18" fill="#e8a0c0" opacity=".78"/><ellipse cx="0" cy="18" rx="10" ry="18" fill="#e8a0c0" opacity=".78"/><ellipse cx="-18" cy="0" rx="18" ry="10" fill="#e8a0c0" opacity=".78"/><ellipse cx="18" cy="0" rx="18" ry="10" fill="#e8a0c0" opacity=".78"/><circle cx="0" cy="0" r="9" fill="#b06090" opacity=".45"/></g>
+  </svg>
+
+  <div class="section-header">
+    <h2>Bar Menu</h2>
+    <p class="section-intro">Thoughtful cocktails and curated wines</p>
+  </div>
+  <div class="section-hero"><img src="assets/cocktail.png" alt="Cocktails"></div>
+
+  <div class="cocktails-showcase">
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🍓 Berry Tipsy Romance 💕</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Sweet berries, wine, and a little flirtation—falls fast, finishes smooth.</p></div>
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🥥 Coconut Cream, Pineapple Dreams 🍍</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Tropical wine bliss with a sneaky splash of cold brew—sweet, bold, and keeps you up late.</p></div>
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🌹 Blame It on the Rosé, Baby ❤️</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Rosé, fruit, and just enough attitude to make everything someone else's fault.</p></div>
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🫐 Love Letters &amp; Blue Lips 💌</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Juicy blueberry wine that starts sweet and ends with secrets spilled.</p></div>
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🍊 Peel Me Closer, Darling 💃</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Bright citrus, wine bubbles, and main-character energy in every sip.</p></div>
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🥭 You Had Me at Mango 💋</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Smooth mango, wine, and instant chemistry—no resisting this one.</p></div>
+    <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🍈 Guava Be Mine 💘</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Pink, flirty guava wine made for slow sips and bad decisions.</p></div>
   </div>
 
-  <div class="corner-floral tr">
-    <svg width="220" height="220" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 200 Q60 120 100 80" stroke="#7a9e6e" stroke-width="2.5" fill="none" opacity="0.7"/>
-      <path d="M20 200 Q40 150 70 130" stroke="#7a9e6e" stroke-width="2" fill="none" opacity="0.5"/>
-      <ellipse cx="55" cy="145" rx="16" ry="8" fill="#a8c490" opacity="0.6" transform="rotate(-35 55 145)"/>
-      <ellipse cx="85" cy="115" rx="14" ry="7" fill="#7a9e6e" opacity="0.55" transform="rotate(-50 85 115)"/>
-      <g transform="translate(100,80)">
-        <ellipse cx="0" cy="-18" rx="10" ry="18" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="0" cy="18"  rx="10" ry="18" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="-18" cy="0" rx="18" ry="10" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="18"  cy="0" rx="18" ry="10" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="-13" cy="-13" rx="10" ry="18" fill="#a8c490" opacity="0.65" transform="rotate(45 -13 -13)"/>
-        <ellipse cx="13"  cy="-13" rx="10" ry="18" fill="#a8c490" opacity="0.65" transform="rotate(-45 13 -13)"/>
-        <ellipse cx="-13" cy="13"  rx="10" ry="18" fill="#a8c490" opacity="0.65" transform="rotate(-45 -13 13)"/>
-        <ellipse cx="13"  cy="13"  rx="10" ry="18" fill="#a8c490" opacity="0.65" transform="rotate(45 13 13)"/>
-        <circle cx="0" cy="0" r="9" fill="#7a9e6e" opacity="0.5"/>
-      </g>
-      <g transform="translate(62,128)">
-        <ellipse cx="0" cy="-10" rx="6" ry="10" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="0" cy="10"  rx="6" ry="10" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="-10" cy="0" rx="10" ry="6" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="10"  cy="0" rx="10" ry="6" fill="#e8b4b0" opacity="0.7"/>
-        <circle cx="0" cy="0" r="5" fill="#faf6ef" opacity="0.8"/>
-      </g>
-      <ellipse cx="78" cy="98" rx="7" ry="11" fill="#a8c490" opacity="0.6" transform="rotate(-20 78 98)"/>
-    </svg>
+  <div class="menu-grid">
+    <div class="menu-category" style="grid-column:1/-1;">
+      <div class="beer-section-header">
+        <div class="beer-section-title">🍺 $10 Craft Beers</div>
+        <div class="beer-section-subtitle">Light bodies. Dirty thoughts. Juicy pours.</div>
+      </div>
+      <div class="beer-category"><div class="beer-category-title">🌤️ Light &amp; Easy</div>
+        <div class="beer-item"><div class="beer-name">Aval French Cider</div><div class="beer-description">Crisp, bubbly, dangerously refreshing — like a French flirt that won't text back 🍏💋</div></div>
+        <div class="beer-item"><div class="beer-name">Rupees India Pale Ale</div><div class="beer-description">Smooth, mellow, charming — the "nice guy" that sneaks up on you 😌</div></div>
+      </div>
+      <div class="beer-category"><div class="beer-category-title">🍑 Fruity &amp; a Little Naughty</div>
+        <div class="beer-item"><div class="beer-name">Talea Peach Berry Punch – Sour Ale</div><div class="beer-description">Sweet, tart, and a little mouthy — pucker up, baby 🍑💄</div></div>
+      </div>
+      <div class="beer-category"><div class="beer-category-title">🌫️ Hazy, Juicy &amp; Hot</div>
+        <div class="beer-item"><div class="beer-name">Wrench – Hazy IPA</div><div class="beer-description">Soft, juicy, easy to love — zero resistance required 😍</div></div>
+        <div class="beer-item"><div class="beer-name">Other Half Forever</div><div class="beer-description">Commitment issues? Not with this one. Juicy, lush, here to stay 💍🍻</div></div>
+        <div class="beer-item"><div class="beer-name">Other Half Green City</div><div class="beer-description">Big city energy — loud hops, juicy attitude, no apologies 🌆💚</div></div>
+        <div class="beer-item"><div class="beer-name">Other Half Broccoli</div><div class="beer-description">Dank. Green. Slightly weird. Surprisingly sexy 🥦🔥</div></div>
+        <div class="beer-item"><div class="beer-name">Other Half Mr. Softee Space Twistee</div><div class="beer-description">Creamy citrus swirl that tastes like bad decisions done right 🍦🚀</div></div>
+      </div>
+      <div class="beer-category"><div class="beer-category-title">⭐ Best Sellers</div>
+        <div class="beer-item"><div class="beer-name">Grimm Chronos</div><div class="beer-description">Clean, smooth, timeless — never ghosts you ⏳💋</div></div>
+        <div class="beer-item"><div class="beer-name">Grimm Wavetable</div><div class="beer-description">Bright, fresh, perfectly balanced — like your favorite situationship 🌊😉</div></div>
+        <div class="beer-item"><div class="beer-name">Grimm Flash Frame</div><div class="beer-description">Fast, flashy, and gone before you regret it 📸⚡</div></div>
+        <div class="beer-item"><div class="beer-name">KCBC Los Muertos</div><div class="beer-description">Bold, dark, unforgettable — raises the dead and your standards 💀❤️</div></div>
+        <div class="beer-item"><div class="beer-name">KCBC Insane in the Grain</div><div class="beer-description">Grainy, deep, a little unhinged — in the best way 😵‍💫🍺</div></div>
+      </div>
+      <div class="beer-category"><div class="beer-category-title">🌲 Big, Bold &amp; Legendary</div>
+        <div class="beer-item"><div class="beer-name">Sip of Sunshine IPA</div><div class="beer-description">Bright, happy, way stronger than it looks ☀️😏</div></div>
+        <div class="beer-item"><div class="beer-name">The Alchemist Vermont IPA</div><div class="beer-description">Rustic, piney, quietly seductive — old soul, strong hands 🌲🫶</div></div>
+        <div class="beer-item"><div class="beer-name">The Alchemist Heady Topper</div><div class="beer-description">Thick, dank, iconic — sip slow or regret everything 🍻🔥</div></div>
+      </div>
+    </div>
+
+    <div class="menu-category wine-card">
+      <h3 class="category-title">✦ Wine 🍷</h3>
+      <p style="font-size:.78rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--lavender);margin-bottom:.5rem;margin-top:.25rem;position:relative;z-index:1;">— Whites &amp; Rosé —</p>
+      <div class="menu-item"><div class="item-name">Picobello<span class="item-note">Germany · Still White · Soft fruit, gentle florals</span></div><div class="item-price">$14 / $56</div></div>
+      <div class="menu-item"><div class="item-name">Pitti Rosé<span class="item-note">Burgenland, Austria · Still Rosé · Juicy red berries</span></div><div class="item-price">$14 / $56</div></div>
+      <div class="menu-item"><div class="item-name">Dorota Prosecco<span class="item-note">Veneto, Italy · Sparkling White · Green apple, citrus zest</span></div><div class="item-price">$15 / $60</div></div>
+      <div class="menu-item"><div class="item-name">Pat-Nat Lou 38<span class="item-note">Vinho Verde, Portugal · Sparkling White · Fresh orchard fruit, soft fizz</span></div><div class="item-price">$16 / $64</div></div>
+      <div class="menu-item"><div class="item-name">Bugey Blanc 'Chardonnay'<span class="item-note">Savoy, France · Still White · Green apple, citrus, clean minerality</span></div><div class="item-price">$16 / $64</div></div>
+      <div class="menu-item"><div class="item-name">Bisé Orange Wine<span class="item-note">France · Still Orange · Dried citrus, apricot, textured</span></div><div class="item-price">$16 / $64</div></div>
+      <div class="menu-item"><div class="item-name">Cheverny Bellier<span class="item-note">France · Still White · Stone fruit, gentle herbs</span></div><div class="item-price">$18 / $72</div></div>
+      <p style="font-size:.78rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mauve);margin-bottom:.5rem;margin-top:1rem;position:relative;z-index:1;">— Reds —</p>
+      <div class="menu-item"><div class="item-name">Stefanago Mischiabacche<span class="item-note">Lombardy, Italy · Still Red · Wild berries, herbs</span></div><div class="item-price">$12 / $48</div></div>
+      <div class="menu-item"><div class="item-name">Pittnauer 'Pitti' – Burgenland<span class="item-note">Austria · Still Red · Red berries, subtle spice</span></div><div class="item-price">$16 / $64</div></div>
+      <div class="menu-item"><div class="item-name">Jean-Claude Chanudet (Beaujolais)<span class="item-note">Burgundy, France · Still Red · Juicy cherry, violet</span></div><div class="item-price">$18 / $72</div></div>
+      <div class="menu-item"><div class="item-name">Zerbetta – Barbera<span class="item-note">Piedmont, Italy · Still Red · Cherry, raspberry, acidity</span></div><div class="item-price">$18 / $72</div></div>
+    </div>
+
+    <div class="menu-category">
+      <h3 class="category-title">Bar Bites</h3>
+      <div class="menu-item"><div class="item-name">Grilled Cheese<span class="item-note">Melty, golden, classic comfort</span></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">Chips &amp; Salsa<span class="item-note">Fresh-made salsa, crispy tortilla chips</span></div><div class="item-price">$6</div></div>
+      <div class="menu-item"><div class="item-name">Garlic Bread<span class="item-note">Toasted sourdough, herb butter, garlic bliss</span></div><div class="item-price">$12</div></div>
+      <div class="menu-item"><div class="item-name">Hummus &amp; Pita<span class="item-note">Creamy hummus, warm pita, olive oil drizzle</span></div><div class="item-price">$14</div></div>
+    </div>
   </div>
+  <div class="section-icon">🌺 🍹 🌸 🍹 🌺</div>
+</section>
 
-  <!-- ── Falling petals (JS-spawned) ── -->
-  <!-- spawned by JS -->
+<!-- ═══════════════ FLORAL DIVIDER ═══════════════ -->
+<div class="floral-divider">
+  <div class="divider-line"></div>
+  <svg width="160" height="40" viewBox="0 0 160 40" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 20 Q40 8 80 20 Q120 32 150 20" stroke="#e8a0c0" stroke-width="1.5" fill="none" opacity=".6"/>
+    <path d="M10 20 Q40 32 80 20 Q120 8 150 20" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".5"/>
+    <g transform="translate(80,20)"><ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="#c4a8e0" opacity=".75"/><ellipse cx="0" cy="10" rx="5.5" ry="10" fill="#c4a8e0" opacity=".75"/><ellipse cx="-10" cy="0" rx="10" ry="5.5" fill="#c4a8e0" opacity=".75"/><ellipse cx="10" cy="0" rx="10" ry="5.5" fill="#c4a8e0" opacity=".75"/><ellipse cx="-7" cy="-7" rx="5.5" ry="10" fill="#ead6f5" opacity=".65" transform="rotate(45 -7 -7)"/><ellipse cx="7" cy="-7" rx="5.5" ry="10" fill="#ead6f5" opacity=".65" transform="rotate(-45 7 -7)"/><ellipse cx="-7" cy="7" rx="5.5" ry="10" fill="#ead6f5" opacity=".65" transform="rotate(-45 -7 7)"/><ellipse cx="7" cy="7" rx="5.5" ry="10" fill="#ead6f5" opacity=".65" transform="rotate(45 7 7)"/><circle cx="0" cy="0" r="5" fill="#9171bf" opacity=".5"/></g>
+    <g transform="translate(30,20)"><ellipse cx="0" cy="-7" rx="4" ry="7" fill="#e8a0c0" opacity=".65"/><ellipse cx="0" cy="7" rx="4" ry="7" fill="#e8a0c0" opacity=".65"/><ellipse cx="-7" cy="0" rx="7" ry="4" fill="#e8a0c0" opacity=".65"/><ellipse cx="7" cy="0" rx="7" ry="4" fill="#e8a0c0" opacity=".65"/><circle cx="0" cy="0" r="3.5" fill="#b06090" opacity=".5"/></g>
+    <g transform="translate(130,20)"><ellipse cx="0" cy="-7" rx="4" ry="7" fill="#c084b0" opacity=".65"/><ellipse cx="0" cy="7" rx="4" ry="7" fill="#c084b0" opacity=".65"/><ellipse cx="-7" cy="0" rx="7" ry="4" fill="#c084b0" opacity=".65"/><ellipse cx="7" cy="0" rx="7" ry="4" fill="#c084b0" opacity=".65"/><circle cx="0" cy="0" r="3.5" fill="#5e3d85" opacity=".45"/></g>
+  </svg>
+  <div class="divider-line"></div>
+</div>
 
-  <!-- ── Nav ── -->
-  <nav id="navbar">
-    <div class="nav-container">
-      <div class="logo-section">
-        <img src="assets/logo.png" alt="Tipsy Village Logo" class="logo-img">
-        <span class="logo-text">Tipsy Village</span>
-      </div>
-      <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#cafe">Café</a>
-        <a href="#bar">Bar</a>
-        <a href="#events">Events</a>
-        <a href="#story">Story</a>
-        <a href="https://www.instagram.com/tipsy.village.cafe/" target="_blank">Instagram</a>
-      </div>
+<!-- ═══════════════ EVENTS ═══════════════ -->
+<section id="events">
+  <div class="section-header"><h2>Events</h2></div>
+  <div class="events-content">
+    <p>Community events.<br>Follow us on Instagram for weekly updates.</p>
+    <a href="https://www.instagram.com/tipsy.village.cafe/" target="_blank" class="ig-link">Follow on Instagram</a>
+    <div style="margin-top:3rem;padding-top:3rem;border-top:1.5px solid var(--border);">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:.75rem;color:var(--plum);position:relative;z-index:1;">Book Your Event</h3>
+      <p style="margin-bottom:2rem;color:var(--text-mid);position:relative;z-index:1;">Interested in hosting a private event? Send us a message!</p>
+      <form id="eventForm" action="https://api.web3forms.com/submit" method="POST" style="max-width:600px;margin:0 auto;text-align:left;position:relative;z-index:1;">
+        <input type="hidden" name="access_key" value="88f9b224-29c0-4e70-82da-0910a5f3715a">
+        <input type="hidden" name="subject" value="New Event Booking Inquiry - Tipsy Village">
+        <input type="hidden" name="from_name" value="Tipsy Village Website">
+        <div style="margin-bottom:1.25rem;"><label class="form-label">Name *</label><input type="text" name="name" required class="form-input"></div>
+        <div style="margin-bottom:1.25rem;"><label class="form-label">Email *</label><input type="email" name="email" required class="form-input"></div>
+        <div style="margin-bottom:1.25rem;"><label class="form-label">Phone</label><input type="tel" name="phone" class="form-input"></div>
+        <div style="margin-bottom:1.25rem;"><label class="form-label">Event Date</label><input type="date" name="event_date" id="eventDate" class="form-input"></div>
+        <div style="margin-bottom:1.25rem;"><label class="form-label">Number of Guests</label><input type="number" name="guests" min="1" class="form-input"></div>
+        <div style="margin-bottom:1.75rem;"><label class="form-label">Message *</label><textarea name="message" required rows="5" class="form-input" style="resize:vertical;" placeholder="Tell us about your event..."></textarea></div>
+        <button type="submit" id="submitBtn" class="ig-link" style="width:100%;cursor:pointer;border:none;">Send Message</button>
+      </form>
+      <div id="formMessage" style="margin-top:1.25rem;padding:1rem;border-radius:8px;display:none;position:relative;z-index:1;"></div>
     </div>
-  </nav>
-
-  <!-- ── Hero ── -->
-  <header class="hero" id="home">
-    <!-- Large SVG botanical corner flowers -->
-    <svg class="hero-flower f1" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-      <path d="M30 280 Q80 180 150 120 Q200 80 260 40" stroke="#7a9e6e" stroke-width="3" fill="none" opacity="0.6"/>
-      <path d="M30 280 Q60 220 100 190" stroke="#7a9e6e" stroke-width="2" fill="none" opacity="0.4"/>
-      <ellipse cx="80" cy="210" rx="22" ry="11" fill="#a8c490" opacity="0.6" transform="rotate(-40 80 210)"/>
-      <ellipse cx="120" cy="170" rx="20" ry="10" fill="#7a9e6e" opacity="0.5" transform="rotate(-55 120 170)"/>
-      <ellipse cx="55" cy="245" rx="18" ry="9" fill="#a8c490" opacity="0.5" transform="rotate(-25 55 245)"/>
-      <ellipse cx="170" cy="130" rx="16" ry="8" fill="#deecd6" opacity="0.55" transform="rotate(-60 170 130)"/>
-      <g transform="translate(150,120)">
-        <ellipse cx="0" cy="-24" rx="13" ry="24" fill="#e8b4b0" opacity="0.8"/>
-        <ellipse cx="0" cy="24"  rx="13" ry="24" fill="#e8b4b0" opacity="0.8"/>
-        <ellipse cx="-24" cy="0" rx="24" ry="13" fill="#e8b4b0" opacity="0.8"/>
-        <ellipse cx="24"  cy="0" rx="24" ry="13" fill="#e8b4b0" opacity="0.8"/>
-        <ellipse cx="-17" cy="-17" rx="13" ry="24" fill="#f5ddd9" opacity="0.7" transform="rotate(45 -17 -17)"/>
-        <ellipse cx="17"  cy="-17" rx="13" ry="24" fill="#f5ddd9" opacity="0.7" transform="rotate(-45 17 -17)"/>
-        <ellipse cx="-17" cy="17"  rx="13" ry="24" fill="#f5ddd9" opacity="0.7" transform="rotate(-45 -17 17)"/>
-        <ellipse cx="17"  cy="17"  rx="13" ry="24" fill="#f5ddd9" opacity="0.7" transform="rotate(45 17 17)"/>
-        <circle cx="0" cy="0" r="12" fill="#c4835a" opacity="0.55"/>
-      </g>
-      <g transform="translate(100,168)">
-        <ellipse cx="0" cy="-12" rx="7" ry="12" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="0" cy="12"  rx="7" ry="12" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="-12" cy="0" rx="12" ry="7" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="12"  cy="0" rx="12" ry="7" fill="#a8c490" opacity="0.7"/>
-        <circle cx="0" cy="0" r="6" fill="#faf6ef" opacity="0.9"/>
-      </g>
-      <g transform="translate(210,80)">
-        <ellipse cx="0" cy="-16" rx="9" ry="16" fill="#e8b4b0" opacity="0.65"/>
-        <ellipse cx="0" cy="16"  rx="9" ry="16" fill="#e8b4b0" opacity="0.65"/>
-        <ellipse cx="-16" cy="0" rx="16" ry="9" fill="#e8b4b0" opacity="0.65"/>
-        <ellipse cx="16"  cy="0" rx="16" ry="9" fill="#e8b4b0" opacity="0.65"/>
-        <circle cx="0" cy="0" r="8" fill="#c4835a" opacity="0.4"/>
-      </g>
-      <ellipse cx="135" cy="100" rx="8" ry="13" fill="#e8b4b0" opacity="0.55" transform="rotate(-25 135 100)"/>
-      <circle cx="65" cy="255" r="3" fill="#e8b4b0" opacity="0.5"/>
-      <circle cx="185" cy="55" r="2.5" fill="#a8c490" opacity="0.5"/>
-    </svg>
-
-    <svg class="hero-flower f2" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-      <path d="M30 280 Q80 180 150 120 Q200 80 260 40" stroke="#7a9e6e" stroke-width="3" fill="none" opacity="0.6"/>
-      <ellipse cx="80" cy="210" rx="22" ry="11" fill="#deecd6" opacity="0.6" transform="rotate(-40 80 210)"/>
-      <ellipse cx="120" cy="170" rx="20" ry="10" fill="#a8c490" opacity="0.5" transform="rotate(-55 120 170)"/>
-      <g transform="translate(150,120)">
-        <ellipse cx="0" cy="-24" rx="13" ry="24" fill="#deecd6" opacity="0.85"/>
-        <ellipse cx="0" cy="24"  rx="13" ry="24" fill="#deecd6" opacity="0.85"/>
-        <ellipse cx="-24" cy="0" rx="24" ry="13" fill="#deecd6" opacity="0.85"/>
-        <ellipse cx="24"  cy="0" rx="24" ry="13" fill="#deecd6" opacity="0.85"/>
-        <ellipse cx="-17" cy="-17" rx="13" ry="24" fill="#a8c490" opacity="0.7" transform="rotate(45 -17 -17)"/>
-        <ellipse cx="17"  cy="-17" rx="13" ry="24" fill="#a8c490" opacity="0.7" transform="rotate(-45 17 -17)"/>
-        <ellipse cx="-17" cy="17"  rx="13" ry="24" fill="#a8c490" opacity="0.7" transform="rotate(-45 -17 17)"/>
-        <ellipse cx="17"  cy="17"  rx="13" ry="24" fill="#a8c490" opacity="0.7" transform="rotate(45 17 17)"/>
-        <circle cx="0" cy="0" r="12" fill="#7a9e6e" opacity="0.5"/>
-      </g>
-      <g transform="translate(100,168)">
-        <ellipse cx="0" cy="-12" rx="7" ry="12" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="0" cy="12"  rx="7" ry="12" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="-12" cy="0" rx="12" ry="7" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="12"  cy="0" rx="12" ry="7" fill="#e8b4b0" opacity="0.7"/>
-        <circle cx="0" cy="0" r="6" fill="#faf6ef" opacity="0.9"/>
-      </g>
-    </svg>
-
-    <svg class="hero-flower f3" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 120 Q50 80 80 50" stroke="#a8c490" stroke-width="2" fill="none"/>
-      <ellipse cx="45" cy="90" rx="12" ry="6" fill="#7a9e6e" opacity="0.55" transform="rotate(-40 45 90)"/>
-      <g transform="translate(80,50)">
-        <ellipse cx="0" cy="-14" rx="8" ry="14" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="0" cy="14"  rx="8" ry="14" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="-14" cy="0" rx="14" ry="8" fill="#e8b4b0" opacity="0.75"/>
-        <ellipse cx="14"  cy="0" rx="14" ry="8" fill="#e8b4b0" opacity="0.75"/>
-        <circle cx="0" cy="0" r="7" fill="#c4835a" opacity="0.45"/>
-      </g>
-    </svg>
-
-    <svg class="hero-flower f4" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 120 Q50 80 80 50" stroke="#a8c490" stroke-width="2" fill="none"/>
-      <ellipse cx="45" cy="90" rx="12" ry="6" fill="#a8c490" opacity="0.55" transform="rotate(-40 45 90)"/>
-      <g transform="translate(80,50)">
-        <ellipse cx="0" cy="-14" rx="8" ry="14" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="0" cy="14"  rx="8" ry="14" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="-14" cy="0" rx="14" ry="8" fill="#deecd6" opacity="0.8"/>
-        <ellipse cx="14"  cy="0" rx="14" ry="8" fill="#deecd6" opacity="0.8"/>
-        <circle cx="0" cy="0" r="7" fill="#7a9e6e" opacity="0.45"/>
-      </g>
-    </svg>
-
-    <div class="emoji-float emoji-1">🌸</div>
-    <div class="emoji-float emoji-2">🌿</div>
-    <div class="emoji-float emoji-3">🌼</div>
-    <div class="emoji-float emoji-4">🌺</div>
-    <div class="emoji-float emoji-5">🌷</div>
-
-    <div class="hero-content">
-      <h1>Tipsy Village</h1>
-      <p class="hero-sub">Café by day &nbsp;·&nbsp; Bar by night</p>
-      <p class="hero-tagline">Your neighborhood living room</p>
-    </div>
-    <div class="scroll-indicator"></div>
-  </header>
-
-  <!-- ── Spring Banner ── -->
-  <div class="todays-special">
-    <!-- SVG flower left -->
-    <svg class="banner-flower-l" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(50,50)">
-        <ellipse cx="0" cy="-20" rx="10" ry="20" fill="#7a9e6e"/>
-        <ellipse cx="0" cy="20"  rx="10" ry="20" fill="#7a9e6e"/>
-        <ellipse cx="-20" cy="0" rx="20" ry="10" fill="#7a9e6e"/>
-        <ellipse cx="20"  cy="0" rx="20" ry="10" fill="#7a9e6e"/>
-        <ellipse cx="-14" cy="-14" rx="10" ry="20" fill="#a8c490" transform="rotate(45 -14 -14)"/>
-        <ellipse cx="14"  cy="-14" rx="10" ry="20" fill="#a8c490" transform="rotate(-45 14 -14)"/>
-        <ellipse cx="-14" cy="14"  rx="10" ry="20" fill="#a8c490" transform="rotate(-45 -14 14)"/>
-        <ellipse cx="14"  cy="14"  rx="10" ry="20" fill="#a8c490" transform="rotate(45 14 14)"/>
-        <circle cx="0" cy="0" r="8" fill="#faf6ef"/>
-      </g>
-    </svg>
-    <!-- SVG flower right -->
-    <svg class="banner-flower-r" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(50,50)">
-        <ellipse cx="0" cy="-20" rx="10" ry="20" fill="#e8b4b0"/>
-        <ellipse cx="0" cy="20"  rx="10" ry="20" fill="#e8b4b0"/>
-        <ellipse cx="-20" cy="0" rx="20" ry="10" fill="#e8b4b0"/>
-        <ellipse cx="20"  cy="0" rx="20" ry="10" fill="#e8b4b0"/>
-        <ellipse cx="-14" cy="-14" rx="10" ry="20" fill="#f5ddd9" transform="rotate(45 -14 -14)"/>
-        <ellipse cx="14"  cy="-14" rx="10" ry="20" fill="#f5ddd9" transform="rotate(-45 14 -14)"/>
-        <ellipse cx="-14" cy="14"  rx="10" ry="20" fill="#f5ddd9" transform="rotate(-45 -14 14)"/>
-        <ellipse cx="14"  cy="14"  rx="10" ry="20" fill="#f5ddd9" transform="rotate(45 14 14)"/>
-        <circle cx="0" cy="0" r="8" fill="#faf6ef"/>
-      </g>
-    </svg>
-
-    <div class="special-label">🌱 Now Brewing · Spring Specials</div>
-    <div class="special-title">Spring Has Arrived <span class="special-emoji">🌸</span><span class="special-emoji">🌿</span><span class="special-emoji">🌼</span></div>
-    <p class="special-description">
-      Fresh blooms, fresh sips — meet our seasonal menu: Rose &amp; Lavender Lattes
-      <span class="special-emoji">🌹</span><span class="special-emoji">💜</span>,
-      Mango Matcha <span class="special-emoji">🥭</span>, and Coconut Cloud Coffee &amp; Matcha
-      <span class="special-emoji">🥥</span> — all $8, all made with in-house syrups.
-    </p>
   </div>
+</section>
 
-  <!-- ── Floral divider ── -->
-  <div class="floral-divider">
-    <div class="floral-divider-line"></div>
-    <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(24,24)">
-        <ellipse cx="0" cy="-11" rx="5.5" ry="11" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="0" cy="11"  rx="5.5" ry="11" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="-11" cy="0" rx="11" ry="5.5" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="11"  cy="0" rx="11" ry="5.5" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="-8" cy="-8" rx="5.5" ry="11" fill="#a8c490" opacity="0.65" transform="rotate(45 -8 -8)"/>
-        <ellipse cx="8"  cy="-8" rx="5.5" ry="11" fill="#a8c490" opacity="0.65" transform="rotate(-45 8 -8)"/>
-        <ellipse cx="-8" cy="8"  rx="5.5" ry="11" fill="#a8c490" opacity="0.65" transform="rotate(-45 -8 8)"/>
-        <ellipse cx="8"  cy="8"  rx="5.5" ry="11" fill="#a8c490" opacity="0.65" transform="rotate(45 8 8)"/>
-        <circle cx="0" cy="0" r="5" fill="#c4835a" opacity="0.5"/>
-      </g>
-    </svg>
-    <div class="floral-divider-line"></div>
+<!-- ═══════════════ FLORAL DIVIDER ═══════════════ -->
+<div class="floral-divider">
+  <div class="divider-line"></div>
+  <svg width="120" height="36" viewBox="0 0 120 36" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(20,18)"><ellipse cx="0" cy="-9" rx="4.5" ry="9" fill="#c4a8e0" opacity=".7"/><ellipse cx="0" cy="9" rx="4.5" ry="9" fill="#c4a8e0" opacity=".7"/><ellipse cx="-9" cy="0" rx="9" ry="4.5" fill="#c4a8e0" opacity=".7"/><ellipse cx="9" cy="0" rx="9" ry="4.5" fill="#c4a8e0" opacity=".7"/><circle cx="0" cy="0" r="4.5" fill="#9171bf" opacity=".5"/></g>
+    <path d="M34 18 Q60 8 86 18" stroke="#c4a8e0" stroke-width="1.5" fill="none" opacity=".5"/>
+    <path d="M34 18 Q60 28 86 18" stroke="#e8a0c0" stroke-width="1.5" fill="none" opacity=".45"/>
+    <g transform="translate(100,18)"><ellipse cx="0" cy="-9" rx="4.5" ry="9" fill="#e8a0c0" opacity=".7"/><ellipse cx="0" cy="9" rx="4.5" ry="9" fill="#e8a0c0" opacity=".7"/><ellipse cx="-9" cy="0" rx="9" ry="4.5" fill="#e8a0c0" opacity=".7"/><ellipse cx="9" cy="0" rx="9" ry="4.5" fill="#e8a0c0" opacity=".7"/><circle cx="0" cy="0" r="4.5" fill="#b06090" opacity=".5"/></g>
+  </svg>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ═══════════════ STORY ═══════════════ -->
+<section id="story">
+  <div class="section-header"><h2>Our Story</h2></div>
+  <div class="story-content">
+    <p>Tipsy Village was created as a neighborhood living room – great coffee, thoughtful cocktails, and a space that transitions seamlessly from morning calm to late-night energy.</p>
   </div>
+</section>
 
-  <!-- ── Café Section ── -->
-  <section id="cafe">
-    <div class="section-header">
-      <h2>Café Menu</h2>
-      <p class="section-intro">Exceptional coffee, thoughtfully crafted teas, and specialty drinks</p>
-    </div>
-    <div class="section-hero"><img src="assets/specialty_coffee.png" alt="Specialty Coffee"></div>
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>© Tipsy Village – 201 Allen St · Open Daily</footer>
 
-    <div class="menu-grid">
-      <div class="menu-category">
-        <h3 class="category-title">Coffee &amp; Tea</h3>
-        <div class="menu-item"><div class="item-name">Espresso</div><div class="item-price">$3</div></div>
-        <div class="menu-item"><div class="item-name">Americano</div><div class="item-price">$4</div></div>
-        <div class="menu-item"><div class="item-name">Cortado</div><div class="item-price">$4</div></div>
-        <div class="menu-item"><div class="item-name">Flat White</div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">Cappuccino</div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">Latte</div><div class="item-price">$7</div></div>
-        <div class="menu-item"><div class="item-name">Mocha</div><div class="item-price">$7</div></div>
-        <div class="menu-item"><div class="item-name">Tea</div><div class="item-price">$4</div></div>
-        <div class="menu-item"><div class="item-name">Chai Latte</div><div class="item-price">$7</div></div>
-        <div class="menu-item"><div class="item-name">Matcha Latte</div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Hot Chocolate</div><div class="item-price">$8</div></div>
-      </div>
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
 
-      <div class="menu-category">
-        <h3 class="category-title">Specialty Drinks</h3>
-        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:1rem;font-style:italic;">All syrups made in-house · Specialty matcha available</p>
-        <div class="menu-item"><div class="item-name">Brûlée Banana Latte / Matcha<span class="item-note">Caramelized banana sweetness with cold foam</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Blueberry Pancake Latte<span class="item-note">Blueberry & brown butter cold foam</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Cardamom Latte<span class="item-note">Warm, aromatic spice for the soul</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Honey Cinnamon Latte / Matcha<span class="item-note">Sweet & spiced, naturally comforting</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Brown Butter Latte / Matcha<span class="item-note">Nutty indulgence, buttery foam & chocolate drizzle</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Sweet Spanish Latte / Matcha<span class="item-note">Silky condensed milk sweetness</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Coconut Cloud Coffee<span class="item-note">Tropical coconut water & espresso foam</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Coconut Cloud Matcha<span class="item-note">Refreshing coconut water meets vibrant matcha</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Strawberry Matcha<span class="item-note">Berry-bright & energizing</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Blueberry Matcha<span class="item-note">Antioxidant powerhouse, gorgeously purple</span></div><div class="item-price">$8</div></div>
-      </div>
-
-      <div class="menu-category spring-card">
-        <h3 class="category-title">🌸 Spring Specials 🌿</h3>
-        <p style="font-size:0.82rem;color:var(--sage);margin-bottom:1.25rem;font-style:italic;">Fresh seasonal syrups made in-house · All $8</p>
-        <div class="menu-item"><div class="item-name">Rose Latte / Matcha<span class="item-note">Delicate floral sweetness, soft and dreamy</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Lavender Latte / Matcha<span class="item-note">Calming lavender with a gentle, aromatic finish</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Mango Matcha<span class="item-note">Tropical mango meets vibrant, earthy matcha</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item" style="border-bottom:none;"><div class="item-name">Coconut Cloud Coffee / Matcha<span class="item-note">Refreshing coconut water with espresso or matcha foam</span></div><div class="item-price">$8</div></div>
-      </div>
-
-      <div class="menu-category">
-        <h3 class="category-title">Pastries &amp; Toast</h3>
-        <div class="menu-item"><div class="item-name">Regular Croissant<span class="item-note">Buttery, flaky, classic</span></div><div class="item-price">$4</div></div>
-        <div class="menu-item"><div class="item-name">Blueberry / Banana Muffin<span class="item-note">Made in-house, moist & delicious</span></div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">Chicken Empanadas<span class="item-note">Savory, handheld perfection, made in-house</span></div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">Vegan Croissant<span class="item-note">Plant-based & perfectly flaky</span></div><div class="item-price">$7</div></div>
-        <div class="menu-item"><div class="item-name">Almond Chocolate Croissant<span class="item-note">Decadent almond cream & rich chocolate</span></div><div class="item-price">$7</div></div>
-        <div class="menu-item"><div class="item-name">Avocado Toast<span class="item-note">Smashed avocado, sea salt, lemon, olive oil on sourdough</span></div><div class="item-price">$8</div></div>
-        <div class="menu-item"><div class="item-name">Cream Cheese Toast<span class="item-note">Creamy spread on toasted perfection</span></div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">PB&J Toast<span class="item-note">Nostalgic comfort, elevated</span></div><div class="item-price">$6</div></div>
-      </div>
-    </div>
-    <div class="section-icon">🌸 ☕ 🌸</div>
-  </section>
-
-  <!-- ── Floral divider ── -->
-  <div class="floral-divider">
-    <div class="floral-divider-line"></div>
-    <svg width="120" height="32" viewBox="0 0 120 32" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(16,16)">
-        <ellipse cx="0" cy="-8" rx="4" ry="8" fill="#a8c490" opacity="0.65"/>
-        <ellipse cx="0" cy="8"  rx="4" ry="8" fill="#a8c490" opacity="0.65"/>
-        <ellipse cx="-8" cy="0" rx="8" ry="4" fill="#a8c490" opacity="0.65"/>
-        <ellipse cx="8"  cy="0" rx="8" ry="4" fill="#a8c490" opacity="0.65"/>
-        <circle cx="0" cy="0" r="4" fill="#7a9e6e" opacity="0.5"/>
-      </g>
-      <path d="M30 16 Q60 6 90 16" stroke="#a8c490" stroke-width="1.5" fill="none" opacity="0.4"/>
-      <path d="M30 16 Q60 26 90 16" stroke="#e8b4b0" stroke-width="1.5" fill="none" opacity="0.4"/>
-      <g transform="translate(104,16)">
-        <ellipse cx="0" cy="-8" rx="4" ry="8" fill="#e8b4b0" opacity="0.65"/>
-        <ellipse cx="0" cy="8"  rx="4" ry="8" fill="#e8b4b0" opacity="0.65"/>
-        <ellipse cx="-8" cy="0" rx="8" ry="4" fill="#e8b4b0" opacity="0.65"/>
-        <ellipse cx="8"  cy="0" rx="8" ry="4" fill="#e8b4b0" opacity="0.65"/>
-        <circle cx="0" cy="0" r="4" fill="#c4835a" opacity="0.5"/>
-      </g>
-    </svg>
-    <div class="floral-divider-line"></div>
-  </div>
-
-  <!-- ── Bar Section ── -->
-  <section id="bar">
-    <div class="section-header">
-      <h2>Bar Menu</h2>
-      <p class="section-intro">Thoughtful cocktails and curated wines</p>
-    </div>
-    <div class="section-hero"><img src="assets/cocktail.png" alt="Cocktails"></div>
-
-    <div class="cocktails-showcase">
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🍓 Berry Tipsy Romance 💕</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Sweet berries, wine, and a little flirtation—falls fast, finishes smooth.</p></div>
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🥥 Coconut Cream, Pineapple Dreams 🍍</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Tropical wine bliss with a sneaky splash of cold brew—sweet, bold, and keeps you up late.</p></div>
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🌹 Blame It on the Rosé, Baby ❤️</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Rosé, fruit, and just enough attitude to make everything someone else's fault.</p></div>
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🫐 Love Letters &amp; Blue Lips 💌</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Juicy blueberry wine that starts sweet and ends with secrets spilled.</p></div>
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🍊 Peel Me Closer, Darling 💃</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Bright citrus, wine bubbles, and main-character energy in every sip.</p></div>
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🥭 You Had Me at Mango 💋</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Smooth mango, wine, and instant chemistry—no resisting this one.</p></div>
-      <div class="cocktail-card"><div class="cocktail-header"><h4 class="cocktail-name">🍈 Guava Be Mine 💘</h4><span class="cocktail-price">$15</span></div><p class="cocktail-desc">Pink, flirty guava wine made for slow sips and bad decisions.</p></div>
-    </div>
-
-    <div class="menu-grid">
-      <div class="menu-category" style="grid-column:1/-1;">
-        <div class="beer-section-header">
-          <div class="beer-section-title">🍺 $10 Craft Beers</div>
-          <div class="beer-section-subtitle">Light bodies. Dirty thoughts. Juicy pours.</div>
-        </div>
-        <div class="beer-category"><div class="beer-category-title">🌤️ Light &amp; Easy</div>
-          <div class="beer-item"><div class="beer-name">Aval French Cider</div><div class="beer-description">Crisp, bubbly, dangerously refreshing — like a French flirt that won't text back 🍏💋</div></div>
-          <div class="beer-item"><div class="beer-name">Rupees India Pale Ale</div><div class="beer-description">Smooth, mellow, charming — the "nice guy" that sneaks up on you 😌</div></div>
-        </div>
-        <div class="beer-category"><div class="beer-category-title">🍑 Fruity &amp; a Little Naughty</div>
-          <div class="beer-item"><div class="beer-name">Talea Peach Berry Punch – Sour Ale</div><div class="beer-description">Sweet, tart, and a little mouthy — pucker up, baby 🍑💄</div></div>
-        </div>
-        <div class="beer-category"><div class="beer-category-title">🌫️ Hazy, Juicy &amp; Hot</div>
-          <div class="beer-item"><div class="beer-name">Wrench – Hazy IPA</div><div class="beer-description">Soft, juicy, easy to love — zero resistance required 😍</div></div>
-          <div class="beer-item"><div class="beer-name">Other Half Forever</div><div class="beer-description">Commitment issues? Not with this one. Juicy, lush, here to stay 💍🍻</div></div>
-          <div class="beer-item"><div class="beer-name">Other Half Green City</div><div class="beer-description">Big city energy — loud hops, juicy attitude, no apologies 🌆💚</div></div>
-          <div class="beer-item"><div class="beer-name">Other Half Broccoli</div><div class="beer-description">Dank. Green. Slightly weird. Surprisingly sexy 🥦🔥</div></div>
-          <div class="beer-item"><div class="beer-name">Other Half Mr. Softee Space Twistee</div><div class="beer-description">Creamy citrus swirl that tastes like bad decisions done right 🍦🚀</div></div>
-        </div>
-        <div class="beer-category"><div class="beer-category-title">⭐ Best Sellers</div>
-          <div class="beer-item"><div class="beer-name">Grimm Chronos</div><div class="beer-description">Clean, smooth, timeless — never ghosts you ⏳💋</div></div>
-          <div class="beer-item"><div class="beer-name">Grimm Wavetable</div><div class="beer-description">Bright, fresh, perfectly balanced — like your favorite situationship 🌊😉</div></div>
-          <div class="beer-item"><div class="beer-name">Grimm Flash Frame</div><div class="beer-description">Fast, flashy, and gone before you regret it 📸⚡</div></div>
-          <div class="beer-item"><div class="beer-name">KCBC Los Muertos</div><div class="beer-description">Bold, dark, unforgettable — raises the dead and your standards 💀❤️</div></div>
-          <div class="beer-item"><div class="beer-name">KCBC Insane in the Grain</div><div class="beer-description">Grainy, deep, a little unhinged — in the best way 😵‍💫🍺</div></div>
-        </div>
-        <div class="beer-category"><div class="beer-category-title">🌲 Big, Bold &amp; Legendary</div>
-          <div class="beer-item"><div class="beer-name">Sip of Sunshine IPA</div><div class="beer-description">Bright, happy, way stronger than it looks ☀️😏</div></div>
-          <div class="beer-item"><div class="beer-name">The Alchemist Vermont IPA</div><div class="beer-description">Rustic, piney, quietly seductive — old soul, strong hands 🌲🫶</div></div>
-          <div class="beer-item"><div class="beer-name">The Alchemist Heady Topper</div><div class="beer-description">Thick, dank, iconic — sip slow or regret everything 🍻🔥</div></div>
-        </div>
-      </div>
-
-      <div class="menu-category wine-card">
-        <h3 class="category-title">✦ Wine 🍷</h3>
-        <p style="font-size:0.78rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:0.5rem;margin-top:0.25rem;">— Whites &amp; Rosé —</p>
-        <div class="menu-item"><div class="item-name">Picobello<span class="item-note">Germany · Still White · Soft fruit, gentle florals</span></div><div class="item-price">$14 / $56</div></div>
-        <div class="menu-item"><div class="item-name">Pitti Rosé<span class="item-note">Burgenland, Austria · Still Rosé · Juicy red berries</span></div><div class="item-price">$14 / $56</div></div>
-        <div class="menu-item"><div class="item-name">Dorota Prosecco<span class="item-note">Veneto, Italy · Sparkling White · Green apple, citrus zest</span></div><div class="item-price">$15 / $60</div></div>
-        <div class="menu-item"><div class="item-name">Pat-Nat Lou 38<span class="item-note">Vinho Verde, Portugal · Sparkling White · Fresh orchard fruit, soft fizz</span></div><div class="item-price">$16 / $64</div></div>
-        <div class="menu-item"><div class="item-name">Bugey Blanc 'Chardonnay'<span class="item-note">Savoy, France · Still White · Green apple, citrus, clean minerality</span></div><div class="item-price">$16 / $64</div></div>
-        <div class="menu-item"><div class="item-name">Bisé Orange Wine<span class="item-note">France · Still Orange · Dried citrus, apricot, textured</span></div><div class="item-price">$16 / $64</div></div>
-        <div class="menu-item"><div class="item-name">Cheverny Bellier<span class="item-note">France · Still White · Stone fruit, gentle herbs</span></div><div class="item-price">$18 / $72</div></div>
-        <p style="font-size:0.78rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--terracotta);margin-bottom:0.5rem;margin-top:1rem;">— Reds —</p>
-        <div class="menu-item"><div class="item-name">Stefanago Mischiabacche<span class="item-note">Lombardy, Italy · Still Red · Wild berries, herbs</span></div><div class="item-price">$12 / $48</div></div>
-        <div class="menu-item"><div class="item-name">Pittnauer 'Pitti' – Burgenland<span class="item-note">Austria · Still Red · Red berries, subtle spice</span></div><div class="item-price">$16 / $64</div></div>
-        <div class="menu-item"><div class="item-name">Jean-Claude Chanudet (Beaujolais)<span class="item-note">Burgundy, France · Still Red · Juicy cherry, violet</span></div><div class="item-price">$18 / $72</div></div>
-        <div class="menu-item"><div class="item-name">Zerbetta – Barbera<span class="item-note">Piedmont, Italy · Still Red · Cherry, raspberry, acidity</span></div><div class="item-price">$18 / $72</div></div>
-      </div>
-
-      <div class="menu-category">
-        <h3 class="category-title">Bar Bites</h3>
-        <div class="menu-item"><div class="item-name">Grilled Cheese<span class="item-note">Melty, golden, classic comfort</span></div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">Chips &amp; Salsa<span class="item-note">Fresh-made salsa, crispy tortilla chips</span></div><div class="item-price">$6</div></div>
-        <div class="menu-item"><div class="item-name">Garlic Bread<span class="item-note">Toasted sourdough, herb butter, garlic bliss</span></div><div class="item-price">$12</div></div>
-        <div class="menu-item"><div class="item-name">Hummus &amp; Pita<span class="item-note">Creamy hummus, warm pita, olive oil drizzle</span></div><div class="item-price">$14</div></div>
-      </div>
-    </div>
-    <div class="section-icon">🌺 🍹 🌺</div>
-  </section>
-
-  <!-- ── Floral divider ── -->
-  <div class="floral-divider">
-    <div class="floral-divider-line"></div>
-    <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(24,24)">
-        <ellipse cx="0" cy="-11" rx="5.5" ry="11" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="0" cy="11"  rx="5.5" ry="11" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="-11" cy="0" rx="11" ry="5.5" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="11"  cy="0" rx="11" ry="5.5" fill="#a8c490" opacity="0.7"/>
-        <ellipse cx="-8" cy="-8" rx="5.5" ry="11" fill="#deecd6" opacity="0.65" transform="rotate(45 -8 -8)"/>
-        <ellipse cx="8"  cy="-8" rx="5.5" ry="11" fill="#deecd6" opacity="0.65" transform="rotate(-45 8 -8)"/>
-        <ellipse cx="-8" cy="8"  rx="5.5" ry="11" fill="#deecd6" opacity="0.65" transform="rotate(-45 -8 8)"/>
-        <ellipse cx="8"  cy="8"  rx="5.5" ry="11" fill="#deecd6" opacity="0.65" transform="rotate(45 8 8)"/>
-        <circle cx="0" cy="0" r="5" fill="#7a9e6e" opacity="0.55"/>
-      </g>
-    </svg>
-    <div class="floral-divider-line"></div>
-  </div>
-
-  <!-- ── Events ── -->
-  <section id="events">
-    <div class="section-header"><h2>Events</h2></div>
-    <div class="events-content">
-      <p>Community events.<br>Follow us on Instagram for weekly updates.</p>
-      <a href="https://www.instagram.com/tipsy.village.cafe/" target="_blank" class="ig-link">Follow on Instagram</a>
-      <div style="margin-top:3rem;padding-top:3rem;border-top:1.5px solid var(--border);">
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:0.75rem;color:var(--moss);position:relative;z-index:1;">Book Your Event</h3>
-        <p style="margin-bottom:2rem;color:var(--text-mid);position:relative;z-index:1;">Interested in hosting a private event? Send us a message!</p>
-        <form id="eventForm" action="https://api.web3forms.com/submit" method="POST" style="max-width:600px;margin:0 auto;text-align:left;position:relative;z-index:1;">
-          <input type="hidden" name="access_key" value="88f9b224-29c0-4e70-82da-0910a5f3715a">
-          <input type="hidden" name="subject" value="New Event Booking Inquiry - Tipsy Village">
-          <input type="hidden" name="from_name" value="Tipsy Village Website">
-          <div style="margin-bottom:1.25rem;"><label class="form-label">Name *</label><input type="text" name="name" required class="form-input"></div>
-          <div style="margin-bottom:1.25rem;"><label class="form-label">Email *</label><input type="email" name="email" required class="form-input"></div>
-          <div style="margin-bottom:1.25rem;"><label class="form-label">Phone</label><input type="tel" name="phone" class="form-input"></div>
-          <div style="margin-bottom:1.25rem;"><label class="form-label">Event Date</label><input type="date" name="event_date" id="eventDate" class="form-input"></div>
-          <div style="margin-bottom:1.25rem;"><label class="form-label">Number of Guests</label><input type="number" name="guests" min="1" class="form-input"></div>
-          <div style="margin-bottom:1.75rem;"><label class="form-label">Message *</label><textarea name="message" required rows="5" class="form-input" style="resize:vertical;" placeholder="Tell us about your event..."></textarea></div>
-          <button type="submit" id="submitBtn" class="ig-link" style="width:100%;cursor:pointer;border:none;">Send Message</button>
-        </form>
-        <div id="formMessage" style="margin-top:1.25rem;padding:1rem;border-radius:8px;display:none;position:relative;z-index:1;"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Floral divider ── -->
-  <div class="floral-divider">
-    <div class="floral-divider-line"></div>
-    <svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(24,24)">
-        <ellipse cx="0" cy="-11" rx="5.5" ry="11" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="0" cy="11"  rx="5.5" ry="11" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="-11" cy="0" rx="11" ry="5.5" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="11"  cy="0" rx="11" ry="5.5" fill="#e8b4b0" opacity="0.7"/>
-        <ellipse cx="-8" cy="-8" rx="5.5" ry="11" fill="#f5ddd9" opacity="0.65" transform="rotate(45 -8 -8)"/>
-        <ellipse cx="8"  cy="-8" rx="5.5" ry="11" fill="#f5ddd9" opacity="0.65" transform="rotate(-45 8 -8)"/>
-        <ellipse cx="-8" cy="8"  rx="5.5" ry="11" fill="#f5ddd9" opacity="0.65" transform="rotate(-45 -8 8)"/>
-        <ellipse cx="8"  cy="8"  rx="5.5" ry="11" fill="#f5ddd9" opacity="0.65" transform="rotate(45 8 8)"/>
-        <circle cx="0" cy="0" r="5" fill="#c4835a" opacity="0.5"/>
-      </g>
-    </svg>
-    <div class="floral-divider-line"></div>
-  </div>
-
-  <!-- ── Story ── -->
-  <section id="story">
-    <div class="section-header"><h2>Our Story</h2></div>
-    <div class="story-content">
-      <p>Tipsy Village was created as a neighborhood living room – great coffee, thoughtful cocktails, and a space that transitions seamlessly from morning calm to late-night energy.</p>
-    </div>
-  </section>
-
-  <!-- ── Footer ── -->
-  <footer>© Tipsy Village – 201 Allen St · Open Daily</footer>
-
-  <script>
-    // Nav scroll
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
-
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', function(e) {
-        e.preventDefault();
-        const t = document.querySelector(this.getAttribute('href'));
-        if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
-      });
-    });
-
-    // Min date
-    const eventDateInput = document.getElementById('eventDate');
-    if (eventDateInput) eventDateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
-
-    // Form submit
-    const form = document.getElementById('eventForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const formMessage = document.getElementById('formMessage');
-
-    form.addEventListener('submit', async function(e) {
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
       e.preventDefault();
-      const eventDate = eventDateInput.value;
-      if (eventDate) {
-        const sel = new Date(eventDate), today = new Date();
-        today.setHours(0,0,0,0);
-        if (sel < today) { showMsg('✗ Please select a future date for your event.', false); return; }
-      }
-      submitBtn.textContent = 'Sending…'; submitBtn.disabled = true;
-      try {
-        const res = await fetch('https://api.web3forms.com/submit', { method:'POST', body:new FormData(form) });
-        const data = await res.json();
-        if (data.success) { showMsg("✓ Message sent! We'll be in touch soon.", true); form.reset(); }
-        else throw new Error();
-      } catch { showMsg('✗ Something went wrong. Try again or reach us on Instagram.', false); }
-      finally { submitBtn.textContent = 'Send Message'; submitBtn.disabled = false; }
+      const t = document.querySelector(this.getAttribute('href'));
+      if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
     });
+  });
 
-    function showMsg(text, ok) {
-      formMessage.style.cssText = `display:block;padding:1rem;border-radius:10px;background:${ok?'rgba(122,158,110,0.15)':'rgba(196,83,58,0.12)'};border:1px solid ${ok?'rgba(122,158,110,0.5)':'rgba(196,83,58,0.4)'};color:${ok?'var(--moss)':'var(--terracotta)'}`;
-      formMessage.textContent = text;
-      setTimeout(() => formMessage.style.display = 'none', 8000);
-    }
+  // Min date
+  const edi = document.getElementById('eventDate');
+  if(edi) edi.setAttribute('min', new Date().toISOString().split('T')[0]);
 
-    // ── Falling petals ──
-    const petals = ['🌸','🌺','🌼','🌷','✿','🌸','🌹'];
-    function spawnPetal() {
-      const el = document.createElement('div');
-      el.className = 'petal';
-      el.textContent = petals[Math.floor(Math.random() * petals.length)];
-      el.style.left = Math.random() * 100 + 'vw';
-      el.style.fontSize = (0.9 + Math.random() * 1.2) + 'rem';
-      const dur = 8 + Math.random() * 10;
-      el.style.animationDuration = dur + 's';
-      el.style.animationDelay = '0s';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), dur * 1000);
+  // Form
+  const form = document.getElementById('eventForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formMsg = document.getElementById('formMessage');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if(edi.value) {
+      const sel = new Date(edi.value), today = new Date();
+      today.setHours(0,0,0,0);
+      if(sel < today){ showMsg('✗ Please select a future date.', false); return; }
     }
-    // Spawn a few immediately, then trickle
-    for (let i = 0; i < 5; i++) setTimeout(spawnPetal, i * 800);
-    setInterval(spawnPetal, 2200);
-  </script>
+    submitBtn.textContent = 'Sending…'; submitBtn.disabled = true;
+    try {
+      const res = await fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(form)});
+      const data = await res.json();
+      if(data.success){ showMsg("✓ Message sent! We'll be in touch soon.", true); form.reset(); }
+      else throw new Error();
+    } catch { showMsg('✗ Something went wrong. Reach us on Instagram.', false); }
+    finally { submitBtn.textContent = 'Send Message'; submitBtn.disabled = false; }
+  });
+
+  function showMsg(text, ok) {
+    formMsg.style.cssText = `display:block;padding:1rem;border-radius:10px;background:${ok?'rgba(145,113,191,.14)':'rgba(176,96,144,.12)'};border:1px solid ${ok?'rgba(145,113,191,.45)':'rgba(176,96,144,.4)'};color:${ok?'var(--plum)':'var(--mauve)'}`;
+    formMsg.textContent = text;
+    setTimeout(()=>formMsg.style.display='none', 8000);
+  }
+
+  // ── Falling petals ──
+  const blooms = ['🌸','🌷','🌺','🌼','✿','💜','🌸','🌹','🌸','🌷'];
+  function spawnPetal() {
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.textContent = blooms[Math.floor(Math.random() * blooms.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.top = '-40px';
+    el.style.fontSize = (0.8 + Math.random() * 1.3) + 'rem';
+    const dur = 7 + Math.random() * 9;
+    el.style.animationDuration = dur + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), dur * 1000 + 200);
+  }
+  for(let i = 0; i < 8; i++) setTimeout(spawnPetal, i * 600);
+  setInterval(spawnPetal, 1800);
+</script>
 </body>
 </html>
