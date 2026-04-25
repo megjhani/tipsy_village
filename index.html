@@ -17,9 +17,9 @@
       --mauve-pale:  #f0d4e8;
       --rose:        #e8a0c0;
       --rose-pale:   #fde8f3;
-      --text-dark:   #2e1840;
-      --text-mid:    #6b4e8a;
-      --text-light:  #a888c8;
+      --text-dark:   #251236;
+      --text-mid:    #4f336f;
+      --text-light:  #6f4f94;
       --card-bg:     rgba(255,255,255,0.78);
       --border:      rgba(145,113,191,0.22);
     }
@@ -32,6 +32,75 @@
       color:var(--text-dark);
       line-height:1.7;
       overflow-x:hidden;
+      transition:background-color .5s ease,color .5s ease;
+    }
+    body.weather-sunny{
+      --cream:#fff8f2;
+      --lavender:#c47a5e;
+      --lav-light:#e7b49b;
+      --lav-pale:#f8d9c8;
+      --lav-softest:#fff2e9;
+      --plum:#8d4a37;
+      --mauve:#d1845a;
+      --mauve-pale:#f8ddcf;
+      --rose:#e9a66f;
+      --rose-pale:#ffe7d4;
+      --text-dark:#2f1b13;
+      --text-mid:#5f3f33;
+      --text-light:#7e5a4a;
+      --card-bg:rgba(255,255,255,0.84);
+      --border:rgba(196,122,94,0.24);
+    }
+    body.weather-cloudy{
+      --cream:#f7f7fb;
+      --lavender:#7f85aa;
+      --lav-light:#b3b7d8;
+      --lav-pale:#dfe2f2;
+      --lav-softest:#f4f5fc;
+      --plum:#4a4e6d;
+      --mauve:#8f93b3;
+      --mauve-pale:#e5e7f5;
+      --rose:#b4a5c8;
+      --rose-pale:#f0e9f7;
+      --text-dark:#1b1f31;
+      --text-mid:#474d6b;
+      --text-light:#646b8b;
+      --card-bg:rgba(255,255,255,0.82);
+      --border:rgba(127,133,170,0.24);
+    }
+    body.weather-rainy{
+      --cream:#f2f6fb;
+      --lavender:#4f78a8;
+      --lav-light:#89a8cf;
+      --lav-pale:#c7d8eb;
+      --lav-softest:#eaf2fa;
+      --plum:#2e4a71;
+      --mauve:#5f8dbf;
+      --mauve-pale:#d4e2f1;
+      --rose:#8caed1;
+      --rose-pale:#e8f1fb;
+      --text-dark:#15273d;
+      --text-mid:#355372;
+      --text-light:#4f6f92;
+      --card-bg:rgba(255,255,255,0.8);
+      --border:rgba(79,120,168,0.25);
+    }
+    body.weather-snow{
+      --cream:#f8fbff;
+      --lavender:#83a6c9;
+      --lav-light:#bfd3e8;
+      --lav-pale:#deebf7;
+      --lav-softest:#f2f8ff;
+      --plum:#4e6e91;
+      --mauve:#96b4d2;
+      --mauve-pale:#e5eff9;
+      --rose:#b2c9de;
+      --rose-pale:#eef6ff;
+      --text-dark:#1e354e;
+      --text-mid:#4b6a88;
+      --text-light:#6886a3;
+      --card-bg:rgba(255,255,255,0.86);
+      --border:rgba(131,166,201,0.24);
     }
 
     /* ── Ambient bloom background ── */
@@ -56,6 +125,96 @@
       position:fixed;inset:0;z-index:-1;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cellipse cx='15' cy='10' rx='4' ry='8' fill='%23c4a8e0' opacity='0.07' transform='rotate(-30 15 10)'/%3E%3Cellipse cx='55' cy='35' rx='3' ry='6' fill='%23e8a0c0' opacity='0.07' transform='rotate(20 55 35)'/%3E%3Cellipse cx='30' cy='60' rx='3.5' ry='7' fill='%23c4a8e0' opacity='0.07' transform='rotate(-15 30 60)'/%3E%3Cellipse cx='70' cy='65' rx='3' ry='6' fill='%23e8a0c0' opacity='0.07' transform='rotate(40 70 65)'/%3E%3Ccircle cx='45' cy='12' r='2' fill='%239171bf' opacity='0.06'/%3E%3Ccircle cx='8' cy='45' r='1.5' fill='%23c084b0' opacity='0.06'/%3E%3C/svg%3E");
       pointer-events:none;
+    }
+    body.weather-sunny::before{
+      background:
+        radial-gradient(circle at 82% 20%, rgba(255,221,145,.45) 0%, rgba(255,221,145,.02) 45%),
+        radial-gradient(ellipse 70% 50% at 5% 10%,  rgba(231,180,155,.2) 0%,transparent 55%),
+        radial-gradient(ellipse 60% 70% at 95% 90%,  rgba(233,166,111,.14) 0%,transparent 55%);
+    }
+    body.weather-cloudy::before{
+      background:
+        radial-gradient(ellipse 75% 45% at 20% 20%, rgba(179,183,216,.26) 0%, transparent 62%),
+        radial-gradient(ellipse 55% 48% at 82% 30%, rgba(191,198,227,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 65% 40% at 52% 88%, rgba(229,231,245,.25) 0%, transparent 64%);
+    }
+    body.weather-rainy::before{
+      background:
+        linear-gradient(180deg, rgba(41,67,99,.18) 0%, rgba(242,246,251,.2) 75%),
+        radial-gradient(ellipse 65% 45% at 10% 8%, rgba(137,168,207,.23) 0%, transparent 58%),
+        radial-gradient(ellipse 55% 50% at 95% 86%, rgba(140,174,209,.18) 0%, transparent 58%);
+    }
+    body.weather-snow::before{
+      background:
+        radial-gradient(circle at 75% 18%, rgba(255,255,255,.42) 0%, rgba(255,255,255,.03) 48%),
+        radial-gradient(ellipse 75% 48% at 18% 12%, rgba(191,211,232,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 55% 50% at 90% 88%, rgba(178,201,222,.16) 0%, transparent 58%);
+    }
+
+    /* Global weather effects layer */
+    .weather-fx{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .5s ease;
+      mix-blend-mode:screen;
+    }
+    .weather-fx.fx-sunny,
+    .weather-fx.fx-cloudy,
+    .weather-fx.fx-rainy,
+    .weather-fx.fx-snow{opacity:1;}
+    .weather-fx.fx-sunny{
+      background:
+        radial-gradient(circle at 84% 16%, rgba(255,235,168,.58) 0%, rgba(255,235,168,.05) 32%, transparent 58%),
+        radial-gradient(circle at 15% 84%, rgba(255,214,184,.22) 0%, transparent 36%);
+      animation:sunPulse 8s ease-in-out infinite;
+    }
+    .weather-fx.fx-cloudy{
+      background:
+        radial-gradient(ellipse 32% 13% at 25% 22%, rgba(255,255,255,.26) 0%, transparent 75%),
+        radial-gradient(ellipse 28% 12% at 68% 18%, rgba(255,255,255,.2) 0%, transparent 75%),
+        radial-gradient(ellipse 38% 15% at 52% 36%, rgba(255,255,255,.16) 0%, transparent 75%);
+      animation:cloudDrift 20s ease-in-out infinite;
+    }
+    .weather-fx.fx-rainy{
+      background:
+        repeating-linear-gradient(
+          115deg,
+          rgba(255,255,255,.12) 0px,
+          rgba(255,255,255,.12) 2px,
+          transparent 2px,
+          transparent 12px
+        );
+      animation:rainSlide .8s linear infinite;
+      opacity:.7;
+    }
+    .weather-fx.fx-snow{
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.85) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,.75) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,.68) 1px, transparent 2px);
+      background-size:140px 140px, 180px 180px, 220px 220px;
+      background-position:0 0, 40px 70px, 90px 30px;
+      animation:snowFall 16s linear infinite;
+      opacity:.55;
+    }
+    @keyframes sunPulse{
+      0%,100%{transform:scale(1);filter:saturate(1);}
+      50%{transform:scale(1.04);filter:saturate(1.08);}
+    }
+    @keyframes cloudDrift{
+      0%,100%{transform:translateX(0);}
+      50%{transform:translateX(28px);}
+    }
+    @keyframes rainSlide{
+      0%{background-position:0 0;}
+      100%{background-position:0 220px;}
+    }
+    @keyframes snowFall{
+      0%{background-position:0 0, 40px 70px, 90px 30px;}
+      100%{background-position:0 240px, 40px 280px, 90px 260px;}
     }
 
     /* ── Falling petals (JS-spawned) ── */
@@ -102,10 +261,10 @@
       flex-wrap:wrap;gap:1rem;
     }
 
-    .logo-section{display:flex;align-items:center;gap:.75rem;}
+    .logo-section{display:flex;align-items:center;gap:.5rem;flex-wrap:nowrap;}
 
     .logo-img{
-      height:42px;width:42px;border-radius:50%;
+      height:50px;width:50px;border-radius:50%;
       object-fit:cover;
       border:2px solid var(--lav-light);
       transition:transform .5s;
@@ -115,8 +274,28 @@
 
     .logo-text{
       font-family:'Cormorant Garamond',serif;
-      font-weight:600;font-size:1.35rem;
-      letter-spacing:3px;color:var(--plum);
+      font-weight:600;font-size:1.3rem;
+      letter-spacing:2.2px;color:var(--plum);
+      white-space:nowrap;
+    }
+    .brand-x{
+      font-family:'Cormorant Garamond',serif;
+      font-weight:600;
+      font-size:1.3rem;
+      color:var(--mauve);
+      margin:0 .2rem;
+      opacity:.9;
+    }
+    .logo-img-collab{
+      border-radius:12px;
+      height:46px;
+      width:46px;
+      border-color:var(--rose);
+    }
+    .logo-text-collab{
+      font-size:1.1rem;
+      letter-spacing:.8px;
+      color:var(--mauve);
     }
 
     .nav-links{display:flex;gap:2rem;align-items:center;}
@@ -161,6 +340,26 @@
       display:flex;align-items:center;justify-content:center;
       text-align:center;position:relative;
       padding-top:70px;overflow:hidden;
+    }
+    body.weather-sunny header.hero{
+      background:
+        linear-gradient(155deg, rgba(255,225,190,.78) 0%, rgba(255,248,242,.56) 45%, rgba(255,212,178,.66) 100%),
+        url('assets/background.jpg') center/cover no-repeat;
+    }
+    body.weather-cloudy header.hero{
+      background:
+        linear-gradient(155deg, rgba(210,217,236,.74) 0%, rgba(247,247,251,.58) 46%, rgba(225,230,245,.7) 100%),
+        url('assets/background.jpg') center/cover no-repeat;
+    }
+    body.weather-rainy header.hero{
+      background:
+        linear-gradient(155deg, rgba(95,125,162,.72) 0%, rgba(228,237,247,.52) 50%, rgba(128,160,198,.66) 100%),
+        url('assets/background.jpg') center/cover no-repeat;
+    }
+    body.weather-snow header.hero{
+      background:
+        linear-gradient(155deg, rgba(197,219,238,.72) 0%, rgba(248,252,255,.62) 50%, rgba(210,228,243,.7) 100%),
+        url('assets/background.jpg') center/cover no-repeat;
     }
 
     /* Hero floral frame — top & bottom garland strips */
@@ -210,7 +409,9 @@
       margin-top:1.5rem;
       font-family:'Cormorant Garamond',serif;
       font-style:italic;font-size:1.45rem;
-      color:var(--mauve);opacity:.9;
+      color:var(--plum);
+      opacity:1;
+      text-shadow:0 1px 10px rgba(255,255,255,.55), 0 1px 2px rgba(46,24,64,.18);
     }
 
     /* Floating emoji flowers */
@@ -355,6 +556,31 @@
     }
     .section-hero img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
     .section-hero:hover img{transform:scale(1.04);}
+
+    .collab-spotlight{
+      margin-bottom:2.5rem;
+      padding:1.25rem;
+      background:linear-gradient(135deg,rgba(255,255,255,.78) 0%,rgba(234,214,245,.42) 100%);
+      border:1px solid rgba(196,168,224,.35);
+      border-radius:18px;
+      box-shadow:0 6px 24px rgba(94,61,133,.1);
+      position:relative;
+      z-index:1;
+    }
+    .collab-headline{
+      text-align:center;
+      font-family:'Cormorant Garamond',serif;
+      color:var(--plum);
+      font-size:1.8rem;
+      margin:.5rem 0 .35rem;
+      letter-spacing:1px;
+    }
+    .collab-copy{
+      text-align:center;
+      color:var(--text-mid);
+      font-style:italic;
+      margin-bottom:1rem;
+    }
 
     /* ── Menu Grid ── */
     .menu-grid{
@@ -585,6 +811,12 @@
       h2{font-size:2.2rem;}
       .nav-links{gap:1rem;font-size:.78rem;}
       .nav-container{flex-direction:column;gap:.8rem;}
+      .logo-section{gap:.35rem;}
+      .logo-img{height:34px;width:34px;}
+      .logo-img-collab{height:30px;width:30px;border-radius:8px;}
+      .logo-text{font-size:1rem;letter-spacing:1px;}
+      .brand-x{font-size:1rem;margin:0 .1rem;}
+      .logo-text-collab{font-size:.86rem;letter-spacing:.4px;}
       .special-title{font-size:2rem;}
       .section-hero{height:200px;}
       .menu-grid,.cocktails-showcase{grid-template-columns:1fr;}
@@ -594,6 +826,7 @@
   </style>
 </head>
 <body>
+<div id="weatherFx" class="weather-fx" aria-hidden="true"></div>
 
 <!-- ═══════════════ CORNER BOUQUETS ═══════════════ -->
 <div class="corner-floral tl">
@@ -683,10 +916,14 @@
     <div class="logo-section">
       <img src="assets/logo.png" alt="Tipsy Village Logo" class="logo-img">
       <span class="logo-text">Tipsy Village</span>
+      <span class="brand-x">×</span>
+      <img src="assets/Tipsy_Village_Bombay_Sandwich_Colab.jpeg" alt="Bombay Chaat Co Logo" class="logo-img logo-img-collab">
+      <span class="logo-text logo-text-collab">Bombay Chaat Co</span>
     </div>
     <div class="nav-links">
       <a href="#home">Home</a>
-      <a href="#cafe">Café</a>
+      <a href="#cafe">Cafe</a>
+      <a href="#bombay-collab">Bombay Sandwiches</a>
       <a href="#bar">Bar</a>
       <a href="#events">Events</a>
       <a href="#story">Story</a>
@@ -985,6 +1222,31 @@
   <div class="section-icon">🌸 ☕ 🌷 ☕ 🌸</div>
 </section>
 
+<!-- ═══════════════ BOMBAY COLLAB ═══════════════ -->
+<section id="bombay-collab">
+  <div class="section-header">
+    <h2>Bombay Collab</h2>
+    <p class="section-intro">Tipsy Village × Bombay Chaat Co</p>
+  </div>
+  <div class="collab-spotlight">
+    <h3 class="collab-headline">Bombay Sandwich Collaboration</h3>
+    <p class="collab-copy">Now serving a special Bombay Sandwich lineup.</p>
+    <div class="section-hero" style="height:260px;margin-bottom:1.25rem;">
+      <img src="assets/Tipsy_Village_Bombay_Sandwich_Colab.jpeg" alt="Tipsy Village x Bombay Chaat Co Collaboration">
+    </div>
+    <div class="menu-grid" style="margin-top:0;">
+      <div class="menu-category" style="grid-column:1/-1;">
+        <h3 class="category-title">Bombay Sandwiches</h3>
+        <div class="menu-item"><div class="item-name">Chutney Sandwich</div><div class="item-price">$6</div></div>
+        <div class="menu-item"><div class="item-name">Bombay Cheese Toast</div><div class="item-price">$8</div></div>
+        <div class="menu-item"><div class="item-name">Masala Toast</div><div class="item-price">$9</div></div>
+        <div class="menu-item"><div class="item-name">Bombay Sandwich</div><div class="item-price">$12</div></div>
+        <div class="menu-item"><div class="item-name">Chicken Tikka Sandwich</div><div class="item-price">$14</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════ FLORAL DIVIDER ═══════════════ -->
 <div class="floral-divider">
   <div class="divider-line"></div>
@@ -1197,8 +1459,81 @@
     setTimeout(()=>formMsg.style.display='none', 8000);
   }
 
+  // ── Weather theme (Open-Meteo, no API key) ──
+  function mapWeatherToTheme(code) {
+    if (code === 0) return 'weather-sunny';
+    if ([1, 2, 3, 45, 48].includes(code)) return 'weather-cloudy';
+    if (
+      (code >= 51 && code <= 67) ||
+      (code >= 80 && code <= 82) ||
+      (code >= 95 && code <= 99)
+    ) return 'weather-rainy';
+    if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return 'weather-snow';
+    return 'weather-cloudy';
+  }
+
+  function applyWeatherFx(themeClass) {
+    const weatherFx = document.getElementById('weatherFx');
+    if (!weatherFx) return;
+    weatherFx.classList.remove('fx-sunny', 'fx-cloudy', 'fx-rainy', 'fx-snow');
+    if (themeClass === 'weather-sunny') weatherFx.classList.add('fx-sunny');
+    if (themeClass === 'weather-cloudy') weatherFx.classList.add('fx-cloudy');
+    if (themeClass === 'weather-rainy') weatherFx.classList.add('fx-rainy');
+    if (themeClass === 'weather-snow') weatherFx.classList.add('fx-snow');
+  }
+
+  function bloomsForTheme(themeClass) {
+    if (themeClass === 'weather-rainy') return ['💧','🌧️','💧','🌧️','💜','☔','💧','🌧️'];
+    if (themeClass === 'weather-snow') return ['❄️','❄️','🤍','✨','❄️','💙','❄️','✨'];
+    if (themeClass === 'weather-sunny') return ['🌼','☀️','🌸','🌺','🌻','✨','🌞','🌸'];
+    return ['🌸','🌷','🌺','🌼','✿','💜','🌸','🌹','🌸','🌷'];
+  }
+
+  function applyThemeClass(themeClass) {
+    document.body.classList.remove('weather-sunny', 'weather-cloudy', 'weather-rainy', 'weather-snow');
+    document.body.classList.add(themeClass);
+    applyWeatherFx(themeClass);
+    blooms = bloomsForTheme(themeClass);
+  }
+
+  let latestWeatherTheme = 'weather-cloudy';
+
+  async function fetchAndApplyWeatherTheme(latitude, longitude) {
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=weather_code`;
+    const response = await fetch(weatherUrl);
+    const data = await response.json();
+    const code = data?.current?.weather_code;
+    if (typeof code !== 'number') throw new Error('Missing weather code');
+    const themeClass = mapWeatherToTheme(code);
+    latestWeatherTheme = themeClass;
+    applyThemeClass(themeClass);
+  }
+
+  async function initWeatherTheme() {
+    const fallbackCoords = { latitude: 40.7359, longitude: -73.9911 }; // Lower Manhattan fallback
+
+    if (!navigator.geolocation) {
+      fetchAndApplyWeatherTheme(fallbackCoords.latitude, fallbackCoords.longitude).catch(() => {});
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        fetchAndApplyWeatherTheme(pos.coords.latitude, pos.coords.longitude).catch(() => {
+          fetchAndApplyWeatherTheme(fallbackCoords.latitude, fallbackCoords.longitude).catch(() => {});
+        });
+      },
+      () => {
+        fetchAndApplyWeatherTheme(fallbackCoords.latitude, fallbackCoords.longitude).catch(() => {});
+      },
+      { enableHighAccuracy: false, timeout: 4500, maximumAge: 1000 * 60 * 20 }
+    );
+  }
+  initWeatherTheme();
+  setInterval(initWeatherTheme, 1000 * 60 * 10);
+
   // ── Falling petals ──
-  const blooms = ['🌸','🌷','🌺','🌼','✿','💜','🌸','🌹','🌸','🌷'];
+  let blooms = ['🌸','🌷','🌺','🌼','✿','💜','🌸','🌹','🌸','🌷'];
   function spawnPetal() {
     const el = document.createElement('div');
     el.className = 'petal';
